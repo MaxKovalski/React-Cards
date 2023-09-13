@@ -43,8 +43,8 @@ const pages = [
     permissions: [usersPermissions.none],
   },
   {
-    route: "/favorite",
-    title: "Favorite",
+    route: "/fav-cards",
+    title: "Favorite Cards",
     permissions: [
       usersPermissions.user,
       usersPermissions.business,
