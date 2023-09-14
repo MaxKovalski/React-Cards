@@ -7,6 +7,7 @@ import Router from "./Router";
 import { createContext } from "react";
 import Loader from "./Components/Loader";
 import { useEffect } from "react";
+import Footer from "./Components/Footer";
 export const GeneralContext = createContext();
 function App() {
   const [user, setUser] = useState();
@@ -88,6 +89,7 @@ function App() {
         <NavBar onThemeChange={handleThemeChange} theme={theme} />
         <Router theme={theme} />
         {loader && <Loader />}
+        <Footer />
       </ThemeProvider>
     </GeneralContext.Provider>
   );
