@@ -18,15 +18,21 @@ export default function Login({ theme }) {
   const { setUser, setLoader, setUserPermission } = useContext(GeneralContext);
 
   const schema = Joi.object({
-    email: Joi.string().email({ tlds: false }).required(),
+    email: Joi.string().email({ tlds: false }).required().messages({
+      "string.empty": "Email Address is required",
+      "string.email": "Email must be a valid email address",
+    }),
     password: Joi.string()
       .min(8)
+      .max(32)
       .pattern(/^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@%$#^&*\-_*]).{8,32}$/)
       .required()
       .messages({
+        "string.empty": "Password is required",
         "string.min": "Password must be at least 8 characters long",
-        "any.required": "Password is required",
-        "string.pattern.base": "Password must meet the specified criteria",
+        "string.max": "Password must not exceed 32 characters",
+        "string.pattern.base":
+          "Password must contain at least one uppercase letter and one special character",
       }),
   });
   const validationCheck = (ev) => {

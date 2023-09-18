@@ -14,3 +14,9 @@
   left: 0;
   bottom: 0;
 }
+/* Remove Input Errors */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}

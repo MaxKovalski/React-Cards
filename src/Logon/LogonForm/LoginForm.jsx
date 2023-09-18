@@ -53,6 +53,7 @@ export default function LoginForm({
             noValidate
             onSubmit={handleSubmit}
             sx={{ mt: 1 }}
+            width={"70%"}
           >
             <TextField
               error={Boolean(error.email)}

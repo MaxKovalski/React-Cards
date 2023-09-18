@@ -8,7 +8,7 @@ import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
 import FormControlLabel from "@mui/material/FormControlLabel";
-import Link from "@mui/material/Link";
+import { Link } from "react-router-dom";
 import Typography from "@mui/material/Typography";
 function Copyright(props) {
   return (
@@ -32,6 +32,10 @@ export default function SignUpForm({
   handleSubmit,
   isBusiness,
   setIsBusiness,
+  validationCheck,
+  error,
+  isFormValid,
+  formData,
 }) {
   return (
     <Container component="main" maxWidth="xs">
@@ -61,6 +65,10 @@ export default function SignUpForm({
                 id="firstName"
                 label="First Name"
                 autoFocus
+                onChange={validationCheck}
+                value={formData.firstName}
+                error={Boolean(error.firstName)}
+                helperText={error.firstName}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
@@ -72,6 +80,10 @@ export default function SignUpForm({
                 id="middleName"
                 label="Middle Name"
                 autoFocus
+                onChange={validationCheck}
+                value={formData.middleName}
+                error={Boolean(error.middleName)}
+                helperText={error.middleName}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
@@ -82,6 +94,10 @@ export default function SignUpForm({
                 label="Last Name"
                 name="lastName"
                 autoComplete="family-name"
+                onChange={validationCheck}
+                value={formData.lastName}
+                error={Boolean(error.lastName)}
+                helperText={error.lastName}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
@@ -92,6 +108,10 @@ export default function SignUpForm({
                 label="Phone Number"
                 name="phone"
                 autoComplete="phone"
+                onChange={validationCheck}
+                value={formData.phone}
+                error={Boolean(error.phone)}
+                helperText={error.phone}
               />
             </Grid>
 
@@ -103,6 +123,10 @@ export default function SignUpForm({
                 label="Country"
                 name="country"
                 autoComplete="country"
+                onChange={validationCheck}
+                value={formData.country}
+                error={Boolean(error.country)}
+                helperText={error.country}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
@@ -113,6 +137,10 @@ export default function SignUpForm({
                 label="State"
                 name="state"
                 autoComplete="state"
+                onChange={validationCheck}
+                value={formData.state}
+                error={Boolean(error.state)}
+                helperText={error.state}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
@@ -123,6 +151,10 @@ export default function SignUpForm({
                 label="City"
                 name="city"
                 autoComplete="city"
+                onChange={validationCheck}
+                value={formData.city}
+                error={Boolean(error.city)}
+                helperText={error.city}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
@@ -133,6 +165,10 @@ export default function SignUpForm({
                 label="Street Address"
                 name="street"
                 autoComplete="street"
+                onChange={validationCheck}
+                value={formData.street}
+                error={Boolean(error.street)}
+                helperText={error.street}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
@@ -144,6 +180,10 @@ export default function SignUpForm({
                 name="houseNumber"
                 autoComplete="houseNumber"
                 type="Number"
+                onChange={validationCheck}
+                value={formData.houseNumber}
+                error={Boolean(error.houseNumber)}
+                helperText={error.houseNumber}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
@@ -155,6 +195,10 @@ export default function SignUpForm({
                 name="zip"
                 autoComplete="zip"
                 type="Number"
+                onChange={validationCheck}
+                value={formData.zip}
+                error={Boolean(error.zip)}
+                helperText={error.zip}
               />
             </Grid>
             <Grid item xs={12}>
@@ -165,6 +209,10 @@ export default function SignUpForm({
                 label="Email Address"
                 name="email"
                 autoComplete="email"
+                onChange={validationCheck}
+                value={formData.email}
+                error={Boolean(error.email)}
+                helperText={error.email}
               />
             </Grid>
             <Grid item xs={12}>
@@ -175,6 +223,10 @@ export default function SignUpForm({
                 label="Image Link"
                 name="imgUrl"
                 autoComplete="imgUrl"
+                onChange={validationCheck}
+                value={formData.imgUrl}
+                error={Boolean(error.imgUrl)}
+                helperText={error.imgUrl}
               />
             </Grid>
             <Grid item xs={12}>
@@ -185,10 +237,16 @@ export default function SignUpForm({
                 label="Image Description"
                 name="imgAlt"
                 autoComplete="imgAlt"
+                onChange={validationCheck}
+                value={formData.imgAlt}
+                error={Boolean(error.imgAlt)}
+                helperText={error.imgAlt}
               />
             </Grid>
             <Grid item xs={12}>
               <TextField
+                error={Boolean(error.password)}
+                helperText={error.password}
                 required
                 fullWidth
                 name="password"
@@ -196,6 +254,8 @@ export default function SignUpForm({
                 type="password"
                 id="password"
                 autoComplete="new-password"
+                onChange={validationCheck}
+                value={formData.password}
               />
             </Grid>
             <FormControlLabel
@@ -209,6 +269,7 @@ export default function SignUpForm({
             />
           </Grid>
           <Button
+            disabled={!isFormValid}
             type="submit"
             fullWidth
             variant="contained"
@@ -218,7 +279,7 @@ export default function SignUpForm({
           </Button>
           <Grid container justifyContent="flex-end">
             <Grid item>
-              <Link href="#" variant="body2">
+              <Link to="/login" variant="body2">
                 Already have an account? Sign in
               </Link>
             </Grid>
