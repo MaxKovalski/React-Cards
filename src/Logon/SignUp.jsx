@@ -103,6 +103,7 @@ export default function SignUp({ theme }) {
     }
     setIsFormValid(!validate.error);
     setError(tempErrors);
+    console.log(isFormValid);
   };
   const handleSubmit = (event) => {
     event.preventDefault();

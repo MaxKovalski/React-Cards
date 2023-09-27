@@ -14,79 +14,25 @@ import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
 import LightModeIcon from "@mui/icons-material/LightMode";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useResolvedPath } from "react-router-dom";
 import { GeneralContext } from "../App";
-
-export const usersPermissions = {
-  none: 0,
-  user: 1,
-  business: 2,
-  admin: 3,
-};
-
-export const checkPermissions = (permissions, usersPermissions) => {
-  return permissions.includes(usersPermissions);
-};
-const pages = [
-  {
-    route: "/about",
-    title: "About",
-  },
-  {
-    route: "/login",
-    title: "Login",
-    permissions: [usersPermissions.none],
-  },
-  {
-    route: "/signup",
-    title: "Signup",
-    permissions: [usersPermissions.none],
-  },
-  {
-    route: "/fav-cards",
-    title: "Favorite Cards",
-    permissions: [
-      usersPermissions.user,
-      usersPermissions.business,
-      usersPermissions.admin,
-    ],
-  },
-  {
-    route: "/my-cards",
-    title: "My Cards",
-    permissions: [usersPermissions.business, usersPermissions.admin],
-  },
-  {
-    route: "/admin",
-    title: "User Management",
-    permissions: [usersPermissions.admin],
-  },
-];
-const settings = [
-  {
-    route: "/account",
-    title: "Account",
-    permissions: [usersPermissions.business, usersPermissions.admin],
-  },
-];
-
+import { usersPermissions, checkPermissions, pages } from "./Permissions";
 export default function NavBar({ onThemeChange, theme }) {
   const navigate = useNavigate();
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
   const { user, setUser, setLoader, userPermission, setUserPermission } =
     useContext(GeneralContext);
+  const path = useResolvedPath().pathname;
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
   };
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
   };
-
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
   };
-
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
@@ -126,7 +72,6 @@ export default function NavBar({ onThemeChange, theme }) {
           >
             MAXIM
           </Typography>
-
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
             <IconButton
               size="large"
@@ -165,13 +110,12 @@ export default function NavBar({ onThemeChange, theme }) {
                 .map((page) => (
                   <Link key={page.route} to={page.route}>
                     <MenuItem onClick={handleCloseNavMenu}>
-                      <h4 textAlign="center">{page.title}</h4>
+                      <h4>{page.title}</h4>
                     </MenuItem>
                   </Link>
                 ))}
             </Menu>
           </Box>
-
           <AdbIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} />
           <Typography
             variant="h5"
@@ -191,7 +135,6 @@ export default function NavBar({ onThemeChange, theme }) {
           >
             LOGO
           </Typography>
-
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             {pages
               .filter(
@@ -202,7 +145,13 @@ export default function NavBar({ onThemeChange, theme }) {
               .map((page) => (
                 <Link key={page.route} to={page.route}>
                   <Button
-                    sx={{ my: 2, color: "white", display: "block" }}
+                    sx={{
+                      my: 2,
+                      color: "white",
+                      display: "block",
+                      backgroundColor:
+                        page.route === path ? "cornflowerblue" : "",
+                    }}
                     onClick={handleCloseNavMenu}
                   >
                     <h4>{page.title}</h4>
@@ -210,8 +159,6 @@ export default function NavBar({ onThemeChange, theme }) {
                 </Link>
               ))}
           </Box>
-
-          {/* Avatar  */}
           {userPermission ? (
             <Box sx={{ flexGrow: 0 }}>
               <Tooltip title="Open settings">
@@ -252,7 +199,6 @@ export default function NavBar({ onThemeChange, theme }) {
           ) : (
             <Box></Box>
           )}
-          {/* DarkMode Button */}
           <IconButton sx={{ ml: 3 }} onClick={onThemeChange} color="inherit">
             {theme.palette.mode == "dark" ? (
               <LightModeIcon />

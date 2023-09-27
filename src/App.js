@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./App.css";
-import NavBar, { usersPermissions } from "./Components/NavBar";
+import NavBar from "./Components/NavBar";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import Router from "./Router";
@@ -8,6 +8,7 @@ import { createContext } from "react";
 import Loader from "./Components/Loader";
 import { useEffect } from "react";
 import Footer from "./Components/Footer";
+import { usersPermissions } from "./Components/Permissions";
 export const GeneralContext = createContext();
 function App() {
   const [user, setUser] = useState();

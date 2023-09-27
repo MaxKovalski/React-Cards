@@ -12,7 +12,7 @@ export default function Footer() {
   return (
     <Box
       style={{
-        position: "static",
+        position: "fixed",
         bottom: 0,
         left: 0,
         right: 0,

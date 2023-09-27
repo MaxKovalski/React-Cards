@@ -11,6 +11,9 @@ export default function AccountForm({
   user,
   handleSubmit,
   setUser,
+  validationCheck,
+  error,
+  isFormValid,
 }) {
   return (
     <Container component="main" maxWidth="xs">
@@ -27,7 +30,13 @@ export default function AccountForm({
         <Typography component="h1" variant="h5">
           Edit Account
         </Typography>
-        <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
+        <Box
+          component="form"
+          id="accountForm"
+          noValidate
+          onSubmit={handleSubmit}
+          sx={{ mt: 3 }}
+        >
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>
               <TextField
@@ -39,7 +48,12 @@ export default function AccountForm({
                 label="First Name"
                 autoFocus
                 value={user.firstName}
-                onChange={handelInput}
+                onChange={(event) => {
+                  validationCheck(event);
+                  handelInput(event);
+                }}
+                error={Boolean(error.firstName)}
+                helperText={error.firstName}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
@@ -52,7 +66,12 @@ export default function AccountForm({
                 label="Middle Name"
                 autoFocus
                 value={user.middleName}
-                onChange={handelInput}
+                onChange={(event) => {
+                  validationCheck(event);
+                  handelInput(event);
+                }}
+                error={Boolean(error.middleName)}
+                helperText={error.middleName}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
@@ -64,7 +83,12 @@ export default function AccountForm({
                 name="lastName"
                 autoComplete="family-name"
                 value={user.lastName}
-                onChange={handelInput}
+                onChange={(event) => {
+                  validationCheck(event);
+                  handelInput(event);
+                }}
+                error={Boolean(error.lastName)}
+                helperText={error.lastName}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
@@ -76,7 +100,12 @@ export default function AccountForm({
                 name="phone"
                 autoComplete="phone"
                 value={user.phone}
-                onChange={handelInput}
+                onChange={(event) => {
+                  validationCheck(event);
+                  handelInput(event);
+                }}
+                error={Boolean(error.phone)}
+                helperText={error.phone}
               />
             </Grid>
 
@@ -89,7 +118,12 @@ export default function AccountForm({
                 name="country"
                 autoComplete="country"
                 value={user.country}
-                onChange={handelInput}
+                onChange={(event) => {
+                  validationCheck(event);
+                  handelInput(event);
+                }}
+                error={Boolean(error.country)}
+                helperText={error.country}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
@@ -101,7 +135,12 @@ export default function AccountForm({
                 name="state"
                 autoComplete="state"
                 value={user.state}
-                onChange={handelInput}
+                onChange={(event) => {
+                  validationCheck(event);
+                  handelInput(event);
+                }}
+                error={Boolean(error.state)}
+                helperText={error.state}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
@@ -113,7 +152,12 @@ export default function AccountForm({
                 name="city"
                 autoComplete="city"
                 value={user.city}
-                onChange={handelInput}
+                onChange={(event) => {
+                  validationCheck(event);
+                  handelInput(event);
+                }}
+                error={Boolean(error.city)}
+                helperText={error.city}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
@@ -125,7 +169,12 @@ export default function AccountForm({
                 name="street"
                 autoComplete="street"
                 value={user.street}
-                onChange={handelInput}
+                onChange={(event) => {
+                  validationCheck(event);
+                  handelInput(event);
+                }}
+                error={Boolean(error.street)}
+                helperText={error.street}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
@@ -138,7 +187,12 @@ export default function AccountForm({
                 autoComplete="houseNumber"
                 type="Number"
                 value={user.houseNumber}
-                onChange={handelInput}
+                onChange={(event) => {
+                  validationCheck(event);
+                  handelInput(event);
+                }}
+                error={Boolean(error.houseNumber)}
+                helperText={error.houseNumber}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
@@ -151,7 +205,12 @@ export default function AccountForm({
                 autoComplete="zip"
                 type="Number"
                 value={user.zip}
-                onChange={setUser}
+                onChange={(event) => {
+                  validationCheck(event);
+                  handelInput(event);
+                }}
+                error={Boolean(error.zip)}
+                helperText={error.zip}
               />
             </Grid>
             <Grid item xs={12}>
@@ -163,7 +222,12 @@ export default function AccountForm({
                 name="email"
                 autoComplete="email"
                 value={user.email}
-                onChange={handelInput}
+                onChange={(event) => {
+                  validationCheck(event);
+                  handelInput(event);
+                }}
+                error={Boolean(error.email)}
+                helperText={error.email}
               />
             </Grid>
             <Grid item xs={12}>
@@ -175,7 +239,12 @@ export default function AccountForm({
                 name="imgUrl"
                 autoComplete="imgUrl"
                 value={user.imgUrl}
-                onChange={handelInput}
+                onChange={(event) => {
+                  validationCheck(event);
+                  handelInput(event);
+                }}
+                error={Boolean(error.imgUrl)}
+                helperText={error.imgUrl}
               />
             </Grid>
             <Grid item xs={12}>
@@ -187,7 +256,12 @@ export default function AccountForm({
                 name="imgAlt"
                 autoComplete="imgAlt"
                 value={user.imgAlt}
-                onChange={handelInput}
+                onChange={(event) => {
+                  validationCheck(event);
+                  handelInput(event);
+                }}
+                error={Boolean(error.imgAlt)}
+                helperText={error.imgAlt}
               />
             </Grid>
           </Grid>
@@ -195,6 +269,7 @@ export default function AccountForm({
             type="submit"
             fullWidth
             variant="contained"
+            disabled={!isFormValid}
             sx={{ mt: 3, mb: 2 }}
           >
             Sign Up

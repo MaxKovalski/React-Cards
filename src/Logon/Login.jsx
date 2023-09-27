@@ -3,10 +3,9 @@ import { ThemeProvider } from "@mui/material/styles";
 import { Link, useNavigate } from "react-router-dom";
 import { useContext, useState } from "react";
 import { GeneralContext } from "../App";
-import { usersPermissions } from "../Components/NavBar";
 import Joi from "joi";
 import LoginForm from "./LogonForm/LoginForm";
-
+import { usersPermissions } from "../Components/Permissions";
 export default function Login({ theme }) {
   const [formData, setFormData] = useState({
     email: "",
