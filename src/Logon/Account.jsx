@@ -35,18 +35,7 @@ export default function Account({ theme }) {
       "string.empty": "Email Address is required",
       "string.email": "Email must be a valid email address",
     }),
-    password: Joi.string()
-      .min(8)
-      .max(32)
-      .pattern(/^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@%$#^&*\-_*]).{8,32}$/)
-      .required()
-      .messages({
-        "string.empty": "Password is required",
-        "string.min": "Password must be at least 8 characters long",
-        "string.max": "Password must not exceed 32 characters",
-        "string.pattern.base":
-          "Password must contain at least one uppercase letter and one special character",
-      }),
+
     imgUrl: Joi.string().required().messages({
       "string.empty": "Image Link is Required",
     }),
@@ -65,10 +54,10 @@ export default function Account({ theme }) {
     city: Joi.string().required().messages({
       "string.empty": "City is Required",
     }),
-    houseNumber: Joi.string().required().messages({
+    houseNumber: Joi.number().required().messages({
       "string.empty": "House Number is Required",
     }),
-    zip: Joi.string().required().messages({
+    zip: Joi.number().required().messages({
       "string.empty": "Zip is Required",
     }),
   });
@@ -76,7 +65,10 @@ export default function Account({ theme }) {
     const { name, value } = ev.target;
     const object = { ...user, [name]: value };
     setUser(object);
-    const validate = schema.validate(object, { abortEarly: false });
+    const validate = schema.validate(object, {
+      abortEarly: false,
+      allowUnknown: true,
+    });
     const tempErrors = { ...error };
     delete tempErrors[name];
     if (validate.error) {
@@ -88,7 +80,7 @@ export default function Account({ theme }) {
     setIsFormValid(!validate.error);
     setError(tempErrors);
     handleSubmit(ev);
-    console.log(isFormValid);
+    console.log(validate);
   };
 
   const handleSubmit = (event) => {
