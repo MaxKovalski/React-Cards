@@ -8,11 +8,13 @@ import Checkbox from "@mui/material/Checkbox";
 import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import Modal from "@mui/material/Modal";
 import AddCardIcon from "@mui/icons-material/AddCard";
+import { GeneralContext } from "../App";
+import GetMyCards from "./GetMyCards";
+
 const style = {
   position: "absolute",
   top: "50%",
@@ -26,28 +28,61 @@ const style = {
 };
 
 export default function MyCards() {
+  const { setLoader } = React.useContext(GeneralContext);
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  // fetch(
-  //   `https://api.shipap.co.il/business/cards?token=5364e7bc-5265-11ee-becb-14dda9d4a5f0`,
-  //   {
-  //     credentials: "include",
-  //     method: "POST",
-  //     headers: { "Content-type": "application/json" },
-  //     body: JSON.stringify(),
-  //   }
-  // )
-  //   .then((res) => res.json())
-  //   .then((data) => {});
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
+  const [addCard, setAddCard] = React.useState({
+    title: "",
+    subtitle: "",
+    description: "",
+    phone: "",
+    email: "",
+    web: "",
+    imgUrl: "",
+    imgAlt: "",
+    country: "",
+    street: "",
+    houseNumber: "",
+    state: "",
+    zip: "",
+    city: "",
+  });
+  const publishCards = (ev) => {
+    ev.preventDefault();
+    setLoader(true);
+    fetch(
+      `https://api.shipap.co.il/business/cards?token=5364e7bc-5265-11ee-becb-14dda9d4a5f0`,
+      {
+        credentials: "include",
+        method: "POST",
+        headers: { "Content-type": "application/json" },
+        body: JSON.stringify(addCard),
+      }
+    )
+      .then((res) => {
+        if (res.ok) {
+          res.json();
+        } else {
+          return res.text().then((x) => {
+            throw new Error(x);
+          });
+        }
+      })
+      .finally(() => {
+        setLoader(false);
+        handleClose();
+      });
   };
+  const handleInput = (ev) => {
+    const { name, value } = ev.target;
+    const obj = {
+      ...addCard,
+      [name]: value,
+    };
+    setAddCard(obj);
+  };
+
   return (
     <div>
       <h4> My Cards</h4>
@@ -55,6 +90,7 @@ export default function MyCards() {
         <Button onClick={handleOpen} variant="contained">
           Create Card
         </Button>
+        <GetMyCards />
         <Modal
           open={open}
           onClose={handleClose}
@@ -78,7 +114,7 @@ export default function MyCards() {
                 <Box
                   component="form"
                   noValidate
-                  onSubmit={handleSubmit}
+                  onSubmit={publishCards}
                   sx={{ mt: 3 }}
                 >
                   <Grid
@@ -95,6 +131,8 @@ export default function MyCards() {
                         id="title"
                         label="Title"
                         autoFocus
+                        onChange={handleInput}
+                        value={addCard.title}
                       />
                     </Grid>
                     <Grid item xs={6}>
@@ -104,6 +142,8 @@ export default function MyCards() {
                         label="Subtitle"
                         name="subtitle"
                         autoComplete="subtitle"
+                        onChange={handleInput}
+                        value={addCard.subtitle}
                       />
                     </Grid>
                     <Grid item xs={6}>
@@ -114,6 +154,8 @@ export default function MyCards() {
                         label="Description"
                         name="description"
                         autoComplete="description"
+                        onChange={handleInput}
+                        value={addCard.description}
                       />
                     </Grid>
                     <Grid item xs={6}>
@@ -122,9 +164,10 @@ export default function MyCards() {
                         fullWidth
                         name="phone"
                         label="Phone"
-                        type="phone"
                         id="phone"
                         autoComplete="phone"
+                        onChange={handleInput}
+                        value={addCard.phone}
                       />
                     </Grid>
                     <Grid item xs={6}>
@@ -133,9 +176,10 @@ export default function MyCards() {
                         fullWidth
                         name="email"
                         label="Email Address"
-                        type="email"
                         id="email"
                         autoComplete="email"
+                        onChange={handleInput}
+                        value={addCard.email}
                       />
                     </Grid>
                     <Grid item xs={6}>
@@ -143,9 +187,10 @@ export default function MyCards() {
                         fullWidth
                         name="web"
                         label="Web"
-                        type="web"
                         id="web"
                         autoComplete="web"
+                        onChange={handleInput}
+                        value={addCard.web}
                       />
                     </Grid>
                     <Grid item xs={6}>
@@ -154,9 +199,10 @@ export default function MyCards() {
                         fullWidth
                         name="imgUrl"
                         label="Image Url"
-                        type="imgUrl"
                         id="imgUrl"
                         autoComplete="imgUrl"
+                        onChange={handleInput}
+                        value={addCard.imgUrl}
                       />
                     </Grid>
                     <Grid item xs={6}>
@@ -165,9 +211,10 @@ export default function MyCards() {
                         fullWidth
                         name="imgAlt"
                         label="Image Description"
-                        type="imgAlt"
                         id="imgAlt"
                         autoComplete="imgAlt"
+                        onChange={handleInput}
+                        value={addCard.imgAlt}
                       />
                     </Grid>
                     <Grid item xs={6}>
@@ -176,9 +223,10 @@ export default function MyCards() {
                         fullWidth
                         name="country"
                         label="Country"
-                        type="country"
                         id="country"
                         autoComplete="country"
+                        onChange={handleInput}
+                        value={addCard.country}
                       />
                     </Grid>
                     <Grid item xs={6}>
@@ -187,9 +235,10 @@ export default function MyCards() {
                         fullWidth
                         name="city"
                         label="City"
-                        type="city"
                         id="city"
                         autoComplete="city"
+                        onChange={handleInput}
+                        value={addCard.city}
                       />
                     </Grid>
                     <Grid item xs={6}>
@@ -198,9 +247,10 @@ export default function MyCards() {
                         fullWidth
                         name="street"
                         label="Street"
-                        type="street"
                         id="street"
                         autoComplete="street"
+                        onChange={handleInput}
+                        value={addCard.street}
                       />
                     </Grid>
                     <Grid item xs={6}>
@@ -209,9 +259,11 @@ export default function MyCards() {
                         fullWidth
                         name="houseNumber"
                         label="House Number"
-                        type="houseNumber"
+                        type="Number"
                         id="houseNumber"
                         autoComplete="houseNumber"
+                        onChange={handleInput}
+                        value={addCard.houseNumber}
                       />
                     </Grid>
                     <Grid item xs={6}>
@@ -219,19 +271,22 @@ export default function MyCards() {
                         fullWidth
                         name="state"
                         label="State"
-                        type="state"
                         id="state"
                         autoComplete="state"
+                        onChange={handleInput}
+                        value={addCard.state}
                       />
                     </Grid>
                     <Grid item xs={6}>
                       <TextField
                         fullWidth
+                        type="Number"
                         name="zip"
                         label="Zip"
-                        type="zip"
                         id="zip"
                         autoComplete="zip"
+                        onChange={handleInput}
+                        value={addCard.zip}
                       />
                     </Grid>
                   </Grid>

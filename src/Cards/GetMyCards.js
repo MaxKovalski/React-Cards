@@ -10,18 +10,19 @@ import Typography from "@mui/material/Typography";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import IconButton from "@mui/material/IconButton";
 import LocalPhoneIcon from "@mui/icons-material/LocalPhone";
-
+import CreateIcon from "@mui/icons-material/Create";
 import "../Style/Cards.css";
 import "../index.css";
+import EditCard from "./EditCard";
 
-export default function Cards() {
+export default function GetMyCards() {
   const { user, setUser, setLoader, userPermission } =
     useContext(GeneralContext);
   const [cards, setCards] = useState([]);
-
+  const [selectId, setSelectId] = useState(null); // State
   useEffect(() => {
     fetch(
-      `https://api.shipap.co.il/cards?token=5364e7bc-5265-11ee-becb-14dda9d4a5f0`,
+      `https://api.shipap.co.il/business/cards?token=5364e7bc-5265-11ee-becb-14dda9d4a5f0`,
       {
         credentials: "include",
       }
@@ -31,8 +32,6 @@ export default function Cards() {
         setCards(data);
       });
   }, []);
-
-  console.log(cards);
 
   return (
     <Container maxWidth="xl">
@@ -62,16 +61,20 @@ export default function Cards() {
                 <CardActions
                   sx={{ display: "flex", flexDirection: "row-reverse" }}
                 >
-                  {userPermission ? (
-                    <IconButton
-                      className="icon-btn"
-                      aria-label="add to favorites"
-                    >
-                      <FavoriteIcon />
-                    </IconButton>
-                  ) : (
-                    ""
-                  )}
+                  <IconButton
+                    className="icon-btn"
+                    aria-label="add to favorites"
+                  >
+                    <FavoriteIcon />
+                  </IconButton>
+
+                  <IconButton
+                    className="icon-btn"
+                    aria-label="edit card"
+                    onClick={() => setSelectId(card.id)}
+                  >
+                    <CreateIcon />
+                  </IconButton>
 
                   <IconButton className="icon-btn" aria-label="phone">
                     <LocalPhoneIcon />
@@ -80,6 +83,7 @@ export default function Cards() {
               </Card>
             </Grid>
           ))}
+        <EditCard cardId={selectId} />
       </Grid>
     </Container>
   );

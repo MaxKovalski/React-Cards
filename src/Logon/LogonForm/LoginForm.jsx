@@ -16,6 +16,7 @@ export default function LoginForm({
   formData,
   error,
   isFormValid,
+  signUpEmail,
 }) {
   return (
     <Grid container component="main" sx={{ height: "90vh" }}>

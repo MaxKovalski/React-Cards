@@ -4,11 +4,14 @@ import { ThemeProvider } from "@mui/material/styles";
 import { GeneralContext } from "../App";
 import SignUpForm from "./LogonForm/SignUpForm";
 import Joi from "joi";
+import { useNavigate } from "react-router-dom";
+import LoginForm from "./LogonForm/LoginForm";
 export default function SignUp({ theme }) {
   const { setLoader } = useContext(GeneralContext);
   const [isBusiness, setIsBusiness] = useState(false);
   const [error, setError] = useState({});
   const [isFormValid, setIsFormValid] = useState(false);
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     firstName: "",
     middleName: "",
@@ -143,8 +146,9 @@ export default function SignUp({ theme }) {
           });
         }
       })
-      .then((data) => {
-        console.log(data);
+      .then(() => {
+        <LoginForm signUpEmail={formData.email} />;
+        navigate("/login");
       })
       .catch((err) => {
         console.log(err.message);
