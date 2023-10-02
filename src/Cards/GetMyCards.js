@@ -15,12 +15,11 @@ import "../Style/Cards.css";
 import "../index.css";
 import EditCard from "./EditCard";
 
-export default function GetMyCards() {
-  const { user, setUser, setLoader, userPermission } =
-    useContext(GeneralContext);
-  const [cards, setCards] = useState([]);
-  const [selectId, setSelectId] = useState(null); // State
+export default function GetMyCards({ cards, setCards }) {
+  const { setLoader } = useContext(GeneralContext);
+
   useEffect(() => {
+    setLoader(true);
     fetch(
       `https://api.shipap.co.il/business/cards?token=5364e7bc-5265-11ee-becb-14dda9d4a5f0`,
       {
@@ -30,9 +29,9 @@ export default function GetMyCards() {
       .then((res) => res.json())
       .then((data) => {
         setCards(data);
-      });
+      })
+      .finally(setLoader(false));
   }, []);
-
   return (
     <Container maxWidth="xl">
       <h1>Business Cards</h1>
@@ -68,13 +67,11 @@ export default function GetMyCards() {
                     <FavoriteIcon />
                   </IconButton>
 
-                  <IconButton
-                    className="icon-btn"
-                    aria-label="edit card"
-                    onClick={() => setSelectId(card.id)}
-                  >
-                    <CreateIcon />
-                  </IconButton>
+                  <EditCard
+                    cardId={card.id}
+                    cards={cards}
+                    setCards={setCards}
+                  />
 
                   <IconButton className="icon-btn" aria-label="phone">
                     <LocalPhoneIcon />
@@ -83,7 +80,6 @@ export default function GetMyCards() {
               </Card>
             </Grid>
           ))}
-        <EditCard cardId={selectId} />
       </Grid>
     </Container>
   );
