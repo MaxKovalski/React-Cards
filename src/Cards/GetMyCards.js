@@ -14,9 +14,10 @@ import CreateIcon from "@mui/icons-material/Create";
 import "../Style/Cards.css";
 import "../index.css";
 import EditCard from "./EditCard";
-
 export default function GetMyCards({ cards, setCards }) {
+  console.log(cards);
   const { setLoader } = useContext(GeneralContext);
+  const [productEdited, setProductEdited] = useState();
 
   useEffect(() => {
     setLoader(true);
@@ -32,6 +33,14 @@ export default function GetMyCards({ cards, setCards }) {
       })
       .finally(setLoader(false));
   }, []);
+  const update = (p) => {
+    if (p) {
+      const i = cards.findIndex((x) => x.id == p.id);
+      cards.splice(i, 1, p);
+      setCards([...cards]);
+    }
+    setProductEdited();
+  };
   return (
     <Container maxWidth="xl">
       <h1>Business Cards</h1>
@@ -68,9 +77,9 @@ export default function GetMyCards({ cards, setCards }) {
                   </IconButton>
 
                   <EditCard
-                    cardId={card.id}
-                    cards={cards}
-                    setCards={setCards}
+                    product={productEdited}
+                    edited={update}
+                    cardData={card}
                   />
 
                   <IconButton className="icon-btn" aria-label="phone">

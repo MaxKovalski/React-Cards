@@ -10,44 +10,47 @@ import Grid from "@mui/material/Grid";
 import Avatar from "@mui/material/Avatar";
 import AddCardIcon from "@mui/icons-material/AddCard";
 import { useEffect } from "react";
-export default function EditCard({ cardId, cards, setCards }) {
+export default function EditCard({ product, edited, cardData }) {
   const [open, setOpen] = React.useState(false);
-  const [editedCard, setEditedCard] = React.useState([]);
-
-  const handleOpen = () => {
-    const cardToEdit = cards.find((card) => card.id === cardId);
-    if (cardToEdit) {
-      setEditedCard(cardToEdit);
-      console.log(editedCard);
-      console.log(cardToEdit);
+  const [formData, setFormData] = React.useState();
+  useEffect(() => {
+    if (product) {
+      setFormData(product);
+    } else {
+      setFormData();
     }
+  }, [product]);
+  const inputChange = (ev) => {
+    const { name, value } = ev.target;
+
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+    console.log(formData);
+  };
+  const handleOpen = () => {
+    setFormData(cardData);
     setOpen(true);
   };
   const handleClose = () => setOpen(false);
-  const handleInput = (ev) => {
-    const { name, value } = ev.target;
-    setEditedCard((prevEditedCard) => ({
-      ...prevEditedCard,
-      [name]: value,
-    }));
-    console.log(editedCard);
-  };
-  const editPublish = (ev) => {
+
+  const save = (ev) => {
     ev.preventDefault();
     fetch(
-      `https://api.shipap.co.il/business/cards/:${cardId}?token=5364e7bc-5265-11ee-becb-14dda9d4a5f0`,
+      `https://api.shipap.co.il/business/cards/${cardData.id}?token=5364e7bc-5265-11ee-becb-14dda9d4a5f0`,
       {
         credentials: "include",
         method: "PUT",
         headers: { "Content-type": "application/json" },
-        body: JSON.stringify(editedCard),
+        body: JSON.stringify(formData),
       }
-    ).then((data) => {
-      console.log(data);
-      console.log(editedCard);
-    });
+    )
+      .then(() => {
+        edited(formData);
+      })
+      .finally(handleClose());
   };
-
   const style = {
     position: "absolute",
     top: "50%",
@@ -88,12 +91,7 @@ export default function EditCard({ cardId, cards, setCards }) {
             <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
               <AddCardIcon />
             </Avatar>
-            <Box
-              component="form"
-              noValidate
-              onSubmit={editPublish}
-              sx={{ mt: 3 }}
-            >
+            <Box component="form" noValidate onSubmit={save} sx={{ mt: 3 }}>
               <Grid
                 container
                 rowSpacing={1}
@@ -108,8 +106,8 @@ export default function EditCard({ cardId, cards, setCards }) {
                     id="title"
                     label="Title"
                     autoFocus
-                    value={editedCard?.title}
-                    onChange={handleInput}
+                    value={formData?.title}
+                    onChange={inputChange}
                   />
                 </Grid>
                 <Grid item xs={6}>
@@ -119,8 +117,8 @@ export default function EditCard({ cardId, cards, setCards }) {
                     label="Subtitle"
                     name="subtitle"
                     autoComplete="subtitle"
-                    value={editedCard?.subtitle}
-                    onChange={handleInput}
+                    value={formData?.subtitle}
+                    onChange={inputChange}
                   />
                 </Grid>
                 <Grid item xs={6}>
@@ -131,8 +129,8 @@ export default function EditCard({ cardId, cards, setCards }) {
                     label="Description"
                     name="description"
                     autoComplete="description"
-                    value={editedCard?.description}
-                    onChange={handleInput}
+                    value={formData?.description}
+                    onChange={inputChange}
                   />
                 </Grid>
                 <Grid item xs={6}>
@@ -143,8 +141,8 @@ export default function EditCard({ cardId, cards, setCards }) {
                     label="Phone"
                     id="phone"
                     autoComplete="phone"
-                    value={editedCard?.phone}
-                    onChange={handleInput}
+                    value={formData?.phone}
+                    onChange={inputChange}
                   />
                 </Grid>
                 <Grid item xs={6}>
@@ -155,8 +153,8 @@ export default function EditCard({ cardId, cards, setCards }) {
                     label="Email Address"
                     id="email"
                     autoComplete="email"
-                    value={editedCard?.email}
-                    onChange={handleInput}
+                    value={formData?.email}
+                    onChange={inputChange}
                   />
                 </Grid>
                 <Grid item xs={6}>
@@ -166,8 +164,8 @@ export default function EditCard({ cardId, cards, setCards }) {
                     label="Web"
                     id="web"
                     autoComplete="web"
-                    value={editedCard?.web}
-                    onChange={handleInput}
+                    value={formData?.web}
+                    onChange={inputChange}
                   />
                 </Grid>
                 <Grid item xs={6}>
@@ -178,8 +176,8 @@ export default function EditCard({ cardId, cards, setCards }) {
                     label="Image Url"
                     id="imgUrl"
                     autoComplete="imgUrl"
-                    value={editedCard?.imgUrl}
-                    onChange={handleInput}
+                    value={formData?.imgUrl}
+                    onChange={inputChange}
                   />
                 </Grid>
                 <Grid item xs={6}>
@@ -190,8 +188,8 @@ export default function EditCard({ cardId, cards, setCards }) {
                     label="Image Description"
                     id="imgAlt"
                     autoComplete="imgAlt"
-                    value={editedCard?.imgAlt}
-                    onChange={handleInput}
+                    value={formData?.imgAlt}
+                    onChange={inputChange}
                   />
                 </Grid>
                 <Grid item xs={6}>
@@ -202,8 +200,8 @@ export default function EditCard({ cardId, cards, setCards }) {
                     label="Country"
                     id="country"
                     autoComplete="country"
-                    value={editedCard?.country}
-                    onChange={handleInput}
+                    value={formData?.country}
+                    onChange={inputChange}
                   />
                 </Grid>
                 <Grid item xs={6}>
@@ -214,8 +212,8 @@ export default function EditCard({ cardId, cards, setCards }) {
                     label="City"
                     id="city"
                     autoComplete="city"
-                    value={editedCard?.city}
-                    onChange={handleInput}
+                    value={formData?.city}
+                    onChange={inputChange}
                   />
                 </Grid>
                 <Grid item xs={6}>
@@ -226,8 +224,8 @@ export default function EditCard({ cardId, cards, setCards }) {
                     label="Street"
                     id="street"
                     autoComplete="street"
-                    value={editedCard?.street}
-                    onChange={handleInput}
+                    value={formData?.street}
+                    onChange={inputChange}
                   />
                 </Grid>
                 <Grid item xs={6}>
@@ -239,8 +237,8 @@ export default function EditCard({ cardId, cards, setCards }) {
                     type="Number"
                     id="houseNumber"
                     autoComplete="houseNumber"
-                    value={editedCard?.houseNumber}
-                    onChange={handleInput}
+                    value={formData?.houseNumber}
+                    onChange={inputChange}
                   />
                 </Grid>
                 <Grid item xs={6}>
@@ -250,20 +248,20 @@ export default function EditCard({ cardId, cards, setCards }) {
                     label="State"
                     id="state"
                     autoComplete="state"
-                    value={editedCard?.state}
-                    onChange={handleInput}
+                    value={formData?.state}
+                    onChange={inputChange}
                   />
                 </Grid>
                 <Grid item xs={6}>
                   <TextField
                     fullWidth
-                    type="Number"
+                    type="String"
                     name="zip"
                     label="Zip"
                     id="zip"
                     autoComplete="zip"
-                    value={editedCard?.zip}
-                    onChange={handleInput}
+                    value={formData?.zip}
+                    onChange={inputChange}
                   />
                 </Grid>
               </Grid>
