@@ -47,9 +47,27 @@ export default function MyCards() {
             throw new Error(x);
           });
         }
+        setCards([...cards, addCard]);
       })
+
       .finally(() => {
         setLoader(false);
+        setAddCard({
+          title: "",
+          subtitle: "",
+          description: "",
+          phone: "",
+          email: "",
+          web: "",
+          imgUrl: "",
+          imgAlt: "",
+          country: "",
+          street: "",
+          houseNumber: "",
+          state: "",
+          zip: "",
+          city: "",
+        });
         handleClose();
       });
   };

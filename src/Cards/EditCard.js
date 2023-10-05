@@ -10,16 +10,16 @@ import Grid from "@mui/material/Grid";
 import Avatar from "@mui/material/Avatar";
 import AddCardIcon from "@mui/icons-material/AddCard";
 import { useEffect } from "react";
-export default function EditCard({ product, edited, cardData }) {
+export default function EditCard({ CardEdit, edited, cardData }) {
   const [open, setOpen] = React.useState(false);
   const [formData, setFormData] = React.useState();
   useEffect(() => {
-    if (product) {
-      setFormData(product);
+    if (CardEdit) {
+      setFormData(CardEdit);
     } else {
       setFormData();
     }
-  }, [product]);
+  }, [CardEdit]);
   const inputChange = (ev) => {
     const { name, value } = ev.target;
 

@@ -10,12 +10,11 @@ import Typography from "@mui/material/Typography";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import IconButton from "@mui/material/IconButton";
 import LocalPhoneIcon from "@mui/icons-material/LocalPhone";
-import CreateIcon from "@mui/icons-material/Create";
+import DeleteIcon from "@mui/icons-material/Delete";
 import "../Style/Cards.css";
 import "../index.css";
 import EditCard from "./EditCard";
 export default function GetMyCards({ cards, setCards }) {
-  console.log(cards);
   const { setLoader } = useContext(GeneralContext);
   const [productEdited, setProductEdited] = useState();
 
@@ -41,6 +40,19 @@ export default function GetMyCards({ cards, setCards }) {
     }
     setProductEdited();
   };
+  const deleteCard = (cardId) => {
+    fetch(
+      `https://api.shipap.co.il/business/cards/${cardId}?token=5364e7bc-5265-11ee-becb-14dda9d4a5f0`,
+      {
+        credentials: "include",
+        method: "DELETE",
+      }
+    ).then(() => {
+      const afterDelete = cards.filter((c) => c.id !== cardId);
+      setCards(afterDelete);
+    });
+  };
+
   return (
     <Container maxWidth="xl">
       <h1>Business Cards</h1>
@@ -67,24 +79,35 @@ export default function GetMyCards({ cards, setCards }) {
                   </Typography>
                 </CardContent>
                 <CardActions
-                  sx={{ display: "flex", flexDirection: "row-reverse" }}
+                  sx={{ display: "flex", justifyContent: "space-between" }}
                 >
-                  <IconButton
-                    className="icon-btn"
-                    aria-label="add to favorites"
-                  >
-                    <FavoriteIcon />
-                  </IconButton>
-
-                  <EditCard
-                    product={productEdited}
-                    edited={update}
-                    cardData={card}
-                  />
-
-                  <IconButton className="icon-btn" aria-label="phone">
-                    <LocalPhoneIcon />
-                  </IconButton>
+                  <div>
+                    <IconButton
+                      onClick={() => deleteCard(card.id)}
+                      className="icon-btn"
+                      aria-label="delete"
+                    >
+                      <DeleteIcon />
+                    </IconButton>
+                    <IconButton>
+                      <EditCard
+                        product={productEdited}
+                        edited={update}
+                        cardData={card}
+                      />
+                    </IconButton>
+                  </div>
+                  <div>
+                    <IconButton
+                      className="icon-btn"
+                      aria-label="add to favorites"
+                    >
+                      <FavoriteIcon />
+                    </IconButton>
+                    <IconButton className="icon-btn" aria-label="phone">
+                      <LocalPhoneIcon />
+                    </IconButton>
+                  </div>
                 </CardActions>
               </Card>
             </Grid>
