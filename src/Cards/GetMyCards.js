@@ -16,7 +16,7 @@ import "../index.css";
 import EditCard from "./EditCard";
 export default function GetMyCards({ cards, setCards }) {
   const { setLoader } = useContext(GeneralContext);
-  const [productEdited, setProductEdited] = useState();
+  const [cardEdited, setCardEdited] = useState();
 
   useEffect(() => {
     setLoader(true);
@@ -38,7 +38,7 @@ export default function GetMyCards({ cards, setCards }) {
       cards.splice(i, 1, p);
       setCards([...cards]);
     }
-    setProductEdited();
+    setCardEdited();
   };
   const deleteCard = (cardId) => {
     fetch(
@@ -91,7 +91,7 @@ export default function GetMyCards({ cards, setCards }) {
                     </IconButton>
                     <IconButton>
                       <EditCard
-                        product={productEdited}
+                        card={cardEdited}
                         edited={update}
                         cardData={card}
                       />

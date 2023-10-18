@@ -1,9 +1,22 @@
 import { DataGrid } from "@mui/x-data-grid";
 import { useEffect, useState } from "react";
-import { IconButton } from "@mui/material";
+import { Box, IconButton } from "@mui/material";
 import PersonRemoveIcon from "@mui/icons-material/PersonRemove";
+import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
+
+import UserEdit from "./UserEdit";
+import DeleteCards from "./DeleteCards";
 export default function UserManagement() {
   const [users, setUsers] = useState([]);
+  const [userEdited, setUserEdited] = useState();
+  const update = (u) => {
+    if (u) {
+      const i = users.findIndex((x) => x.id == u.id);
+      users.splice(i, 1, u);
+      setUsers([...users]);
+    }
+    setUserEdited();
+  };
   useEffect(() => {
     fetch(
       `https://api.shipap.co.il/admin/clients?token=5364e7bc-5265-11ee-becb-14dda9d4a5f0`,
@@ -14,8 +27,7 @@ export default function UserManagement() {
       .then((res) => res.json())
       .then((data) => {
         setUsers(data);
-      })
-      .finally(console.log(users));
+      });
   }, []);
 
   const deleteUsers = (userId) => {
@@ -38,9 +50,8 @@ export default function UserManagement() {
     {
       field: "fullName",
       headerName: "Full name",
-      description: "This column has a value getter and is not sortable.",
       sortable: false,
-      width: 160,
+      width: 180,
       valueGetter: (params) =>
         `${params.row.firstName || ""} ${params.row.lastName || ""}`,
     },
@@ -75,11 +86,18 @@ export default function UserManagement() {
       sortable: false,
       width: 120,
       renderCell: (params) => (
-        <div>
+        <Box>
           <IconButton onClick={() => deleteUsers(params.row.id)}>
             <PersonRemoveIcon />
           </IconButton>
-        </div>
+          <IconButton>
+            <UserEdit
+              userParams={params.row}
+              userEdit={userEdited}
+              edited={update}
+            />
+          </IconButton>
+        </Box>
       ),
     },
   ];
@@ -91,10 +109,17 @@ export default function UserManagement() {
     phone: user.phone,
     email: user.email,
     business: user.business,
+    imgUrl: user.imgUrl,
+    imgAlt: user.imgAlt,
+    state: user.state,
+    country: user.country,
+    street: user.street,
+    houseNumber: user.houseNumber,
+    zip: user.zip,
   }));
 
   return (
-    <div>
+    <div style={{ textAlign: "center" }}>
       <h1>Administartor Panel</h1>
       <div
         style={{
@@ -117,6 +142,10 @@ export default function UserManagement() {
           }}
           pageSizeOptions={[5, 10, 15]}
         />
+      </div>
+
+      <div>
+        <DeleteCards />
       </div>
     </div>
   );

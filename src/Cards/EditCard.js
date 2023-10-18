@@ -27,11 +27,11 @@ export default function EditCard({ CardEdit, edited, cardData }) {
       ...formData,
       [name]: value,
     });
-    console.log(formData);
   };
   const handleOpen = () => {
     setFormData(cardData);
     setOpen(true);
+    console.log(cardData);
   };
   const handleClose = () => setOpen(false);
 
