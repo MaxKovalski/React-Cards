@@ -10,16 +10,29 @@ import Typography from "@mui/material/Typography";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import IconButton from "@mui/material/IconButton";
 import LocalPhoneIcon from "@mui/icons-material/LocalPhone";
-
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import "../Style/Cards.css";
 import "../index.css";
-
+import AddFav from "../FavCards/AddFav";
+import FavCards from "../FavCards/FavCards";
+import RemoveFav from "../FavCards/RemoveFav";
 export default function Cards() {
   const { user, setUser, setLoader, userPermission } =
     useContext(GeneralContext);
   const [cards, setCards] = useState([]);
-
+  const [favCards, setFavCards] = useState([]);
   useEffect(() => {
+    setLoader(true);
+    fetch(
+      `https://api.shipap.co.il/cards/favorite?token=5364e7bc-5265-11ee-becb-14dda9d4a5f0`,
+      {
+        credentials: "include",
+      }
+    )
+      .then((res) => res.json())
+      .then((data) => {
+        setFavCards(data);
+      });
     fetch(
       `https://api.shipap.co.il/cards?token=5364e7bc-5265-11ee-becb-14dda9d4a5f0`,
       {
@@ -29,11 +42,20 @@ export default function Cards() {
       .then((res) => res.json())
       .then((data) => {
         setCards(data);
+        setLoader(false);
       });
   }, []);
 
-  console.log(cards);
-
+  const isCardInFav = (cardId) => {
+    return favCards.some((favCard) => favCard.id === cardId);
+  };
+  const toggleFavorite = (cardId) => {
+    if (isCardInFav(cardId)) {
+      RemoveFav(cardId);
+    } else {
+      AddFav(cardId);
+    }
+  };
   return (
     <Container maxWidth="xl">
       <h1>Business Cards</h1>
@@ -66,13 +88,17 @@ export default function Cards() {
                     <IconButton
                       className="icon-btn"
                       aria-label="add to favorites"
+                      onClick={() => toggleFavorite(card.id)}
                     >
-                      <FavoriteIcon />
+                      {isCardInFav(card.id) ? (
+                        <FavoriteIcon />
+                      ) : (
+                        <FavoriteBorderIcon />
+                      )}
                     </IconButton>
                   ) : (
                     ""
                   )}
-
                   <IconButton className="icon-btn" aria-label="phone">
                     <LocalPhoneIcon />
                   </IconButton>

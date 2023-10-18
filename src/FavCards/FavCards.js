@@ -10,56 +10,39 @@ import Typography from "@mui/material/Typography";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import IconButton from "@mui/material/IconButton";
 import LocalPhoneIcon from "@mui/icons-material/LocalPhone";
-import DeleteIcon from "@mui/icons-material/Delete";
+
 import "../Style/Cards.css";
 import "../index.css";
-import EditCard from "./EditCard";
-export default function GetMyCards({ cards, setCards }) {
-  const { setLoader } = useContext(GeneralContext);
-  const [cardEdited, setCardEdited] = useState();
+import RemoveFav from "./RemoveFav";
+
+export default function FavCards() {
+  const { user, setUser, setLoader, userPermission } =
+    useContext(GeneralContext);
+  const [favCards, setFavCards] = useState([]);
 
   useEffect(() => {
     setLoader(true);
     fetch(
-      `https://api.shipap.co.il/business/cards?token=5364e7bc-5265-11ee-becb-14dda9d4a5f0`,
+      `https://api.shipap.co.il/cards/favorite?token=5364e7bc-5265-11ee-becb-14dda9d4a5f0`,
       {
         credentials: "include",
       }
     )
       .then((res) => res.json())
       .then((data) => {
-        setCards(data);
-      })
-      .finally(setLoader(false));
+        setFavCards(data);
+        console.log(data);
+        setLoader(false);
+      });
   }, []);
-  const update = (p) => {
-    if (p) {
-      const i = cards.findIndex((x) => x.id == p.id);
-      cards.splice(i, 1, p);
-      setCards([...cards]);
-    }
-    setCardEdited();
-  };
-  const deleteCard = (cardId) => {
-    fetch(
-      `https://api.shipap.co.il/business/cards/${cardId}?token=5364e7bc-5265-11ee-becb-14dda9d4a5f0`,
-      {
-        credentials: "include",
-        method: "DELETE",
-      }
-    ).then(() => {
-      const afterDelete = cards.filter((c) => c.id !== cardId);
-      setCards(afterDelete);
-    });
-  };
 
   return (
     <Container maxWidth="xl">
-      <h1>My Cards</h1>
-      <h3></h3>
+      <h1>Favorite Cards</h1>
+
       <Grid container spacing={0} sx={{ pt: 10 }}>
-        {cards.length > 0 &&
-          cards.map((card) => (
+        {favCards.length > 0 &&
+          favCards.map((card) => (
             <Grid item xs={3} key={card.id}>
               <Card sx={{ maxWidth: 345 }}>
                 <CardMedia
@@ -74,37 +57,28 @@ export default function GetMyCards({ cards, setCards }) {
                   <Typography variant="body2" color="text.secondary">
                     {card.description}
                   </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    {card.userName}
+                  </Typography>
                 </CardContent>
                 <CardActions
-                  sx={{ display: "flex", justifyContent: "space-between" }}
+                  sx={{ display: "flex", flexDirection: "row-reverse" }}
                 >
-                  <div>
-                    <IconButton
-                      onClick={() => deleteCard(card.id)}
-                      className="icon-btn"
-                      aria-label="delete"
-                    >
-                      <DeleteIcon />
-                    </IconButton>
-                    <IconButton>
-                      <EditCard
-                        card={cardEdited}
-                        edited={update}
-                        cardData={card}
-                      />
-                    </IconButton>
-                  </div>
-                  <div>
+                  {userPermission ? (
                     <IconButton
                       className="icon-btn"
                       aria-label="add to favorites"
+                      onClick={() => RemoveFav(card.id)}
                     >
                       <FavoriteIcon />
                     </IconButton>
-                    <IconButton className="icon-btn" aria-label="phone">
-                      <LocalPhoneIcon />
-                    </IconButton>
-                  </div>
+                  ) : (
+                    ""
+                  )}
+
+                  <IconButton className="icon-btn" aria-label="phone">
+                    <LocalPhoneIcon />
+                  </IconButton>
                 </CardActions>
               </Card>
             </Grid>

@@ -4,7 +4,7 @@ import Login from "./Logon/Login";
 import SignUp from "./Logon/SignUp";
 import Account from "./Logon/Account";
 import Cards from "./Cards/Cards";
-import FavCards from "./Cards/FavCards";
+import FavCards from "./FavCards/FavCards";
 import MyCards from "./Cards/MyCards";
 import About from "./Pages/About";
 import UserManagement from "./Admin/UserManagement";
