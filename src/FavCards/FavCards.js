@@ -16,8 +16,7 @@ import "../index.css";
 import RemoveFav from "./RemoveFav";
 
 export default function FavCards() {
-  const { user, setUser, setLoader, userPermission } =
-    useContext(GeneralContext);
+  const { setLoader, userPermission } = useContext(GeneralContext);
   const [favCards, setFavCards] = useState([]);
 
   useEffect(() => {
@@ -40,7 +39,7 @@ export default function FavCards() {
     <Container maxWidth="xl">
       <h1>Favorite Cards</h1>
 
-      <Grid container spacing={0} sx={{ pt: 10 }}>
+      <Grid container spacing={0} sx={{ pt: 10, marginBottom: "70px" }}>
         {favCards.length > 0 &&
           favCards.map((card) => (
             <Grid item xs={3} key={card.id}>
@@ -77,7 +76,11 @@ export default function FavCards() {
                   )}
 
                   <IconButton className="icon-btn" aria-label="phone">
-                    <LocalPhoneIcon />
+                    <a href={`tel:${card.phone}`}>
+                      <IconButton className="icon-btn" aria-label="phone">
+                        <LocalPhoneIcon />
+                      </IconButton>
+                    </a>
                   </IconButton>
                 </CardActions>
               </Card>

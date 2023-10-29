@@ -1,18 +1,67 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
-import Switch from "@mui/material/Switch";
-import TextField from "@mui/material/TextField";
-import Grid from "@mui/material/Grid";
 import Avatar from "@mui/material/Avatar";
-import FormControlLabel from "@mui/material/FormControlLabel";
+import Joi from "joi";
+import EditForm from "./UserForm/EditFrom";
 export default function UserEdit({ userParams, userEdit, edited }) {
   const [open, setOpen] = React.useState(false);
-
   const [formData, setFormData] = React.useState(userParams);
+  const [error, setError] = React.useState({});
+  const [isFormValid, setIsFormValid] = React.useState(true);
+  const schema = Joi.object({
+    firstName: Joi.string().min(2).required().messages({
+      "string.empty": "First Name Required",
+      "string.min": "First Name must be at least 2 length long",
+    }),
+    middleName: Joi.string().min(2).required().messages({
+      "string.empty": "Middle Name Required",
+      "string.min": "Middle Name must be at least 2 length long",
+    }),
+    lastName: Joi.string().min(2).required().messages({
+      "string.empty": "Last Name Required",
+      "string.min": "Last Name must be at least 2 length long",
+    }),
+    phone: Joi.string()
+      .max(10)
+      .regex(/^[0-9]{10}$/)
+      .messages({
+        "string.empty": "Phone Number is Required",
+        "string.pattern.base":
+          "Phone number must have 10 digits,its need to be only numbers",
+        "string.max": "Phone number must not exceed 10 digits",
+      }),
+    email: Joi.string().email({ tlds: false }).required().messages({
+      "string.empty": "Email Address is required",
+      "string.email": "Email must be a valid email address",
+    }),
+
+    imgUrl: Joi.string().required().messages({
+      "string.empty": "Image Link is Required",
+    }),
+    imgAlt: Joi.string().required().messages({
+      "string.empty": "Image Description is Required",
+    }),
+    state: Joi.string().required().messages({
+      "string.empty": "State is Required",
+    }),
+    country: Joi.string().required().messages({
+      "string.empty": "County is Required",
+    }),
+    street: Joi.string().required().messages({
+      "string.empty": "Street is Required",
+    }),
+    city: Joi.string().required().messages({
+      "string.empty": "City is Required",
+    }),
+    houseNumber: Joi.number().required().messages({
+      "string.empty": "House Number is Required",
+    }),
+    zip: Joi.number().required().messages({
+      "string.empty": "Zip is Required",
+    }),
+  }).options({ stripUnknown: true });
 
   React.useEffect(() => {
     if (userEdit) {
@@ -20,14 +69,38 @@ export default function UserEdit({ userParams, userEdit, edited }) {
     } else {
       setFormData();
     }
+    console.log(userParams.business);
   }, [userEdit]);
-  const inputChange = (ev) => {
+  const validationCheck = (ev) => {
     const { name, value } = ev.target;
-
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
+    const object = { ...formData, [name]: value };
+    setFormData(object);
+    const validate = schema.validate(object, { abortEarly: false });
+    const tempErrors = { ...error };
+    delete tempErrors[name];
+    if (validate.error) {
+      const item = validate.error.details.find((e) => e.context.key == name);
+      if (item) {
+        tempErrors[name] = item.message;
+      }
+    }
+    setIsFormValid(!validate.error);
+    setError(tempErrors);
+    console.log(isFormValid);
+  };
+  const inputChange = (ev) => {
+    const { name, value, type, checked } = ev.target;
+    if (type === "checkbox") {
+      setFormData({
+        ...formData,
+        [name]: checked,
+      });
+    } else {
+      setFormData({
+        ...formData,
+        [name]: value,
+      });
+    }
     console.log(formData);
   };
   const handleClose = () => setOpen(false);
@@ -86,204 +159,14 @@ export default function UserEdit({ userParams, userEdit, edited }) {
             }}
           >
             <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}></Avatar>
-            <Box component="form" noValidate sx={{ mt: 3 }} onSubmit={save}>
-              <Grid
-                container
-                rowSpacing={1}
-                columnSpacing={{ xs: 1, sm: 2, md: 3 }}
-              >
-                <Grid item xs={6}>
-                  <TextField
-                    autoComplete="firstName"
-                    name="firstName"
-                    required
-                    fullWidth
-                    id="firstName"
-                    label="firstName"
-                    autoFocus
-                    value={formData?.firstName}
-                    onChange={inputChange}
-                  />
-                </Grid>
-                <Grid item xs={6}>
-                  <TextField
-                    fullWidth
-                    id="middleName"
-                    label="middleName"
-                    name="middleName"
-                    autoComplete="middleName"
-                    value={formData?.middleName}
-                    onChange={inputChange}
-                  />
-                </Grid>
-                <Grid item xs={6}>
-                  <TextField
-                    required
-                    fullWidth
-                    id="lastName"
-                    label="lastName"
-                    name="lastName"
-                    autoComplete="lastName"
-                    value={formData?.lastName}
-                    onChange={inputChange}
-                  />
-                </Grid>
-                <Grid item xs={6}>
-                  <TextField
-                    required
-                    fullWidth
-                    name="fullName"
-                    label="fullName"
-                    id="fullName"
-                    autoComplete="fullName"
-                    value={formData?.fullName}
-                    onChange={inputChange}
-                  />
-                </Grid>
-                <Grid item xs={6}>
-                  <TextField
-                    required
-                    fullWidth
-                    name="email"
-                    label="Email Address"
-                    id="email"
-                    autoComplete="email"
-                    value={formData?.email}
-                    onChange={inputChange}
-                  />
-                </Grid>
-                <Grid item xs={6}>
-                  <TextField
-                    fullWidth
-                    name="phone"
-                    label="phone"
-                    id="phone"
-                    autoComplete="web"
-                    value={formData?.web}
-                    onChange={inputChange}
-                  />
-                </Grid>
-                <Grid item xs={6}>
-                  <TextField
-                    required
-                    fullWidth
-                    name="imgUrl"
-                    label="Image Url"
-                    id="imgUrl"
-                    autoComplete="imgUrl"
-                    value={formData?.imgUrl}
-                    onChange={inputChange}
-                  />
-                </Grid>
-                <Grid item xs={6}>
-                  <TextField
-                    required
-                    fullWidth
-                    name="imgAlt"
-                    label="Image Description"
-                    id="imgAlt"
-                    autoComplete="imgAlt"
-                    value={formData?.imgAlt}
-                    onChange={inputChange}
-                  />
-                </Grid>
-                <Grid item xs={6}>
-                  <TextField
-                    required
-                    fullWidth
-                    name="country"
-                    label="Country"
-                    id="country"
-                    autoComplete="country"
-                    value={formData?.country}
-                    onChange={inputChange}
-                  />
-                </Grid>
-                <Grid item xs={6}>
-                  <TextField
-                    required
-                    fullWidth
-                    name="city"
-                    label="City"
-                    id="city"
-                    autoComplete="city"
-                    value={formData?.city}
-                    onChange={inputChange}
-                  />
-                </Grid>
-                <Grid item xs={6}>
-                  <TextField
-                    required
-                    fullWidth
-                    name="street"
-                    label="Street"
-                    id="street"
-                    autoComplete="street"
-                    value={formData?.street}
-                    onChange={inputChange}
-                  />
-                </Grid>
-                <Grid item xs={6}>
-                  <TextField
-                    required
-                    fullWidth
-                    name="houseNumber"
-                    label="House Number"
-                    type="Number"
-                    id="houseNumber"
-                    autoComplete="houseNumber"
-                    value={formData?.houseNumber}
-                    onChange={inputChange}
-                  />
-                </Grid>
-                <Grid item xs={6}>
-                  <TextField
-                    fullWidth
-                    name="state"
-                    label="State"
-                    id="state"
-                    autoComplete="state"
-                    value={formData?.state}
-                    onChange={inputChange}
-                  />
-                </Grid>
-                <Grid item xs={6}>
-                  <TextField
-                    fullWidth
-                    type="String"
-                    name="zip"
-                    label="Zip"
-                    id="zip"
-                    autoComplete="zip"
-                    value={formData?.zip}
-                    onChange={inputChange}
-                  />
-                </Grid>
-                <FormControlLabel
-                  sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    height: "100%",
-                  }}
-                  name="business"
-                  control={<Switch color="primary" />}
-                  label="Business"
-                  labelPlacement="start"
-                  type="boolean"
-                  // checked={isBusiness}
-                  // onChange={() => setIsBusiness(!isBusiness)}
-                />
-              </Grid>
-              <div style={{ display: "flex", justifyContent: "center" }}>
-                <Button type="submit" variant="contained" sx={{ mt: 3, mb: 2 }}>
-                  Create
-                </Button>
-              </div>
-              <Grid container justifyContent="flex-end">
-                <Grid item></Grid>
-              </Grid>
-            </Box>
+            <EditForm
+              save={save}
+              formData={formData}
+              validationCheck={validationCheck}
+              inputChange={inputChange}
+              error={error}
+              isFormValid={isFormValid}
+            />
           </Box>
         </Box>
       </Modal>

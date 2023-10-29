@@ -11,28 +11,20 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import IconButton from "@mui/material/IconButton";
 import LocalPhoneIcon from "@mui/icons-material/LocalPhone";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import OpenInFullIcon from "@mui/icons-material/OpenInFull";
 import "../Style/Cards.css";
 import "../index.css";
 import AddFav from "../FavCards/AddFav";
-import FavCards from "../FavCards/FavCards";
 import RemoveFav from "../FavCards/RemoveFav";
+import { Link } from "@mui/material";
+import CardModal from "./CardModal";
 export default function Cards() {
-  const { user, setUser, setLoader, userPermission } =
-    useContext(GeneralContext);
+  const { setLoader, userPermission } = useContext(GeneralContext);
   const [cards, setCards] = useState([]);
   const [favCards, setFavCards] = useState([]);
   useEffect(() => {
     setLoader(true);
-    fetch(
-      `https://api.shipap.co.il/cards/favorite?token=5364e7bc-5265-11ee-becb-14dda9d4a5f0`,
-      {
-        credentials: "include",
-      }
-    )
-      .then((res) => res.json())
-      .then((data) => {
-        setFavCards(data);
-      });
+
     fetch(
       `https://api.shipap.co.il/cards?token=5364e7bc-5265-11ee-becb-14dda9d4a5f0`,
       {
@@ -45,7 +37,22 @@ export default function Cards() {
         setLoader(false);
       });
   }, []);
+  useEffect(() => {
+    if (userPermission === 1 || userPermission === 2 || userPermission === 3) {
+      console.log(userPermission);
 
+      fetch(
+        `https://api.shipap.co.il/cards/favorite?token=5364e7bc-5265-11ee-becb-14dda9d4a5f0`,
+        {
+          credentials: "include",
+        }
+      )
+        .then((res) => res.json())
+        .then((data) => {
+          setFavCards(data);
+        });
+    }
+  }, [userPermission]);
   const isCardInFav = (cardId) => {
     return favCards.some((favCard) => favCard.id === cardId);
   };
@@ -60,29 +67,62 @@ export default function Cards() {
     <Container maxWidth="xl">
       <h1>Business Cards</h1>
       <h3>im glad you to look for business cards here !</h3>
-      <Grid container spacing={0} sx={{ pt: 10 }}>
+      <Grid container spacing={0} sx={{ pt: 10, marginBottom: "70px" }}>
         {cards.length > 0 &&
           cards.map((card) => (
             <Grid item xs={3} key={card.id}>
-              <Card sx={{ maxWidth: 345 }}>
+              <Card
+                sx={{
+                  maxWidth: 345,
+                  marginBottom: "15px",
+                  position: "relative",
+                }}
+              >
                 <CardMedia
                   sx={{ height: 140 }}
                   image={card.imgUrl}
-                  title="green iguana"
+                  title={card.imgAlt}
                 />
                 <CardContent>
                   <Typography gutterBottom variant="h5" component="div">
-                    {card.title}
+                    <h4>Title: {card.title} </h4>
                   </Typography>
                   <Typography variant="body2" color="text.secondary">
-                    {card.description}
+                    <h2> Subtitle: {card.subtitle}</h2>
+                    <br />
+                    <hr></hr>
                   </Typography>
-                  <Typography variant="body2" color="text.secondary">
-                    {card.userName}
+                  <br />
+                  <Typography variant="body2" color="info.main">
+                    Phone: {card.phone}
+                  </Typography>
+                  <Typography variant="body2" color="info.main">
+                    WebSite:
+                    <Link
+                      color="info.main"
+                      href={
+                        card.web.startsWith("http://") ||
+                        card.web.startsWith("https://")
+                          ? card.web
+                          : `http://${card.web}`
+                      }
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {" " + card.web}
+                    </Link>
+                  </Typography>
+                  <Typography variant="body2" color="info.main">
+                    Address: {card.state}
+                    {card.city}
+                    {card.street}
                   </Typography>
                 </CardContent>
                 <CardActions
-                  sx={{ display: "flex", flexDirection: "row-reverse" }}
+                  sx={{
+                    display: "flex",
+                    flexDirection: "row-reverse",
+                  }}
                 >
                   {userPermission ? (
                     <IconButton
@@ -100,9 +140,28 @@ export default function Cards() {
                     ""
                   )}
                   <IconButton className="icon-btn" aria-label="phone">
-                    <LocalPhoneIcon />
+                    <a href={`tel:${card.phone}`}>
+                      <IconButton className="icon-btn" aria-label="phone">
+                        <LocalPhoneIcon />
+                      </IconButton>
+                    </a>
                   </IconButton>
                 </CardActions>
+                <IconButton
+                  sx={{
+                    position: "absolute",
+                    top: "0",
+                    right: "0",
+                    backgroundColor: "transparent",
+                    "&:hover": {
+                      backgroundColor: "transparent",
+                    },
+                  }}
+                  className="icon-btn"
+                  aria-label="phone"
+                >
+                  <CardModal cardId={card.id} card={card} />
+                </IconButton>
               </Card>
             </Grid>
           ))}

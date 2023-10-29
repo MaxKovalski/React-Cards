@@ -15,6 +15,7 @@ function App() {
   const [loader, setLoader] = useState(true);
   const [userPermission, setUserPermission] = useState(usersPermissions.none);
   const [themeLight, setThemeType] = useState(true);
+
   const lightTheme = createTheme({
     palette: {
       primary: {
@@ -26,7 +27,6 @@ function App() {
       mode: "light",
     },
   });
-
   useEffect(() => {
     fetch(`https://api.shipap.co.il/clients/login`, {
       credentials: "include",

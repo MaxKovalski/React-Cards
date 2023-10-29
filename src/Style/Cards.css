@@ -2,3 +2,12 @@ h1,
 h3 {
   text-align: center;
 }
+.test {
+  font-size: 30px;
+  transition: font-size 0.3s;
+  background: none;
+}
+.test:hover {
+  font-size: 35px;
+  background: none;
+}

@@ -12,13 +12,13 @@ export default function Router({ theme }) {
   return (
     <Routes>
       <Route path="/" element={<Cards />} />
-      <Route path="/about" element={<About />} />
       <Route path="/fav-cards" element={<FavCards />} />
       <Route path="/my-cards" element={<MyCards theme={theme} />} />
       <Route path="/admin" element={<UserManagement />} />
       <Route path="/login" element={<Login theme={theme} />} />
       <Route path="/signup" element={<SignUp theme={theme} />} />
       <Route path="/account" element={<Account theme={theme} />} />
+      <Route path="/about" element={<About />} />
     </Routes>
   );
 }

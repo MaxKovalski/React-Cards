@@ -2,8 +2,6 @@ import { DataGrid } from "@mui/x-data-grid";
 import { useEffect, useState } from "react";
 import { Box, IconButton } from "@mui/material";
 import PersonRemoveIcon from "@mui/icons-material/PersonRemove";
-import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
-
 import UserEdit from "./UserEdit";
 import DeleteCards from "./DeleteCards";
 export default function UserManagement() {
@@ -106,6 +104,7 @@ export default function UserManagement() {
     id: user.id,
     firstName: user.firstName,
     lastName: user.lastName,
+    middleName: user.middleName,
     phone: user.phone,
     email: user.email,
     business: user.business,
@@ -113,6 +112,7 @@ export default function UserManagement() {
     imgAlt: user.imgAlt,
     state: user.state,
     country: user.country,
+    city: user.city,
     street: user.street,
     houseNumber: user.houseNumber,
     zip: user.zip,

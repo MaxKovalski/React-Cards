@@ -10,7 +10,6 @@ export default function AccountForm({
   handelInput,
   user,
   handleSubmit,
-  setUser,
   validationCheck,
   error,
   isFormValid,

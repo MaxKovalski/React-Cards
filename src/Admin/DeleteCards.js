@@ -91,6 +91,7 @@ export default function DeleteCards() {
           width: "60%",
           margin: "0 auto",
           marginTop: "70px",
+          marginBottom: "70px",
         }}
       >
         <DataGrid
@@ -104,26 +105,6 @@ export default function DeleteCards() {
           pageSizeOptions={[5, 10, 15]}
         />
       </div>
-      Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatem, iure,
-      cum minus, magnam labore in praesentium excepturi est odio voluptas
-      accusamus ipsa? Ex officiis aliquid consequatur, tenetur beatae quasi
-      laboriosam! Lorem ipsum dolor sit amet consectetur adipisicing elit.
-      Voluptatem, iure, cum minus, magnam labore in praesentium excepturi est
-      odio voluptas accusamus ipsa? Ex officiis aliquid consequatur, tenetur
-      beatae quasi laboriosam! Lorem ipsum dolor sit amet consectetur
-      adipisicing elit. Voluptatem, iure, cum minus, magnam labore in
-      praesentium excepturi est odio voluptas accusamus ipsa? Ex officiis
-      aliquid consequatur, tenetur beatae quasi Lorem ipsum dolor sit amet
-      consectetur adipisicing elit. Voluptatem, iure, cum minus, magnam labore
-      in praesentium excepturi est odio voluptas accusamus ipsa? Ex officiis
-      aliquid consequatur, tenetur beatae quasi Lorem ipsum dolor sit amet
-      consectetur adipisicing elit. Voluptatem, iure, cum minus, magnam labore
-      in praesentium excepturi est odio voluptas accusamus ipsa? Ex officiis
-      aliquid consequatur, tenetur beatae quasi Lorem ipsum dolor sit amet
-      consectetur adipisicing elit. Voluptatem, iure, cum minus, magnam labore
-      in praesentium excepturi est odio voluptas accusamus ipsa? Ex officiis
-      aliquid consequatur, tenetur beatae quasi laboriosam! laboriosam!
-      laboriosam! laboriosam!
     </div>
   );
 }

@@ -29,8 +29,8 @@ export default function GetMyCards({ cards, setCards }) {
       .then((res) => res.json())
       .then((data) => {
         setCards(data);
-      })
-      .finally(setLoader(false));
+        setLoader(false);
+      });
   }, []);
   const update = (p) => {
     if (p) {
@@ -41,6 +41,7 @@ export default function GetMyCards({ cards, setCards }) {
     setCardEdited();
   };
   const deleteCard = (cardId) => {
+    setLoader(true);
     fetch(
       `https://api.shipap.co.il/business/cards/${cardId}?token=5364e7bc-5265-11ee-becb-14dda9d4a5f0`,
       {
@@ -50,6 +51,7 @@ export default function GetMyCards({ cards, setCards }) {
     ).then(() => {
       const afterDelete = cards.filter((c) => c.id !== cardId);
       setCards(afterDelete);
+      setLoader(false);
     });
   };
 
@@ -95,14 +97,12 @@ export default function GetMyCards({ cards, setCards }) {
                     </IconButton>
                   </div>
                   <div>
-                    <IconButton
-                      className="icon-btn"
-                      aria-label="add to favorites"
-                    >
-                      <FavoriteIcon />
-                    </IconButton>
                     <IconButton className="icon-btn" aria-label="phone">
-                      <LocalPhoneIcon />
+                      <a href={`tel:${cards.phone}`}>
+                        <IconButton className="icon-btn" aria-label="phone">
+                          <LocalPhoneIcon />
+                        </IconButton>
+                      </a>
                     </IconButton>
                   </div>
                 </CardActions>

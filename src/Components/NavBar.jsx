@@ -1,19 +1,13 @@
 import React, { useState, useContext } from "react";
-import AppBar from "@mui/material/AppBar";
-import Box from "@mui/material/Box";
-import Toolbar from "@mui/material/Toolbar";
-import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
-import Menu from "@mui/material/Menu";
-import MenuIcon from "@mui/icons-material/Menu";
-import Container from "@mui/material/Container";
-import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
-import Tooltip from "@mui/material/Tooltip";
-import MenuItem from "@mui/material/MenuItem";
-import AdbIcon from "@mui/icons-material/Adb";
-import LightModeIcon from "@mui/icons-material/LightMode";
-import DarkModeIcon from "@mui/icons-material/DarkMode";
+import { AppBar, Box, Toolbar, IconButton, Typography } from "@mui/material";
+import { Menu, MenuItem, Container, Avatar } from "@mui/material";
+import { Button, Tooltip } from "@mui/material";
+import { Menu as MenuIcon } from "@mui/icons-material";
+import { Adb as AdbIcon } from "@mui/icons-material";
+import {
+  LightMode as LightModeIcon,
+  DarkMode as DarkModeIcon,
+} from "@mui/icons-material";
 import { Link, useNavigate, useResolvedPath } from "react-router-dom";
 import { GeneralContext } from "../App";
 import { usersPermissions, checkPermissions, pages } from "./Permissions";

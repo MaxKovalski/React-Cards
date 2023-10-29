@@ -11,8 +11,9 @@ export const checkPermissions = (permissions, usersPermissions) => {
 
 export const pages = [
   {
-    route: "/about",
-    title: "About",
+    route: "/",
+    title: "Home",
+    permissions: [usersPermissions.none],
   },
   {
     route: "/login",
@@ -42,6 +43,10 @@ export const pages = [
     route: "/admin",
     title: "User Management",
     permissions: [usersPermissions.admin],
+  },
+  {
+    route: "/about",
+    title: "About",
   },
 ];
 

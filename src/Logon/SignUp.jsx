@@ -87,7 +87,7 @@ export default function SignUp({ theme }) {
     houseNumber: Joi.string().required().messages({
       "string.empty": "House Number is Required",
     }),
-    zip: Joi.string().required().messages({
+    zip: Joi.number().required().messages({
       "string.empty": "Zip is Required",
     }),
   });
