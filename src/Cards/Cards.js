@@ -11,17 +11,19 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import IconButton from "@mui/material/IconButton";
 import LocalPhoneIcon from "@mui/icons-material/LocalPhone";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import OpenInFullIcon from "@mui/icons-material/OpenInFull";
+import Link from "@mui/material/Link";
+import CardModal from "./CardModal";
+
 import "../Style/Cards.css";
 import "../index.css";
 import AddFav from "../FavCards/AddFav";
 import RemoveFav from "../FavCards/RemoveFav";
-import { Link } from "@mui/material";
-import CardModal from "./CardModal";
+
 export default function Cards() {
   const { setLoader, userPermission } = useContext(GeneralContext);
   const [cards, setCards] = useState([]);
   const [favCards, setFavCards] = useState([]);
+
   useEffect(() => {
     setLoader(true);
 
@@ -37,10 +39,9 @@ export default function Cards() {
         setLoader(false);
       });
   }, []);
+
   useEffect(() => {
     if (userPermission === 1 || userPermission === 2 || userPermission === 3) {
-      console.log(userPermission);
-
       fetch(
         `https://api.shipap.co.il/cards/favorite?token=5364e7bc-5265-11ee-becb-14dda9d4a5f0`,
         {
@@ -53,9 +54,11 @@ export default function Cards() {
         });
     }
   }, [userPermission]);
+
   const isCardInFav = (cardId) => {
     return favCards.some((favCard) => favCard.id === cardId);
   };
+
   const toggleFavorite = (cardId) => {
     if (isCardInFav(cardId)) {
       RemoveFav(cardId);
@@ -63,21 +66,16 @@ export default function Cards() {
       AddFav(cardId);
     }
   };
+
   return (
     <Container maxWidth="xl">
       <h1>Business Cards</h1>
-      <h3>im glad you to look for business cards here !</h3>
-      <Grid container spacing={0} sx={{ pt: 10, marginBottom: "70px" }}>
+      <h3>Im glad you are looking for business cards here!</h3>
+      <Grid container spacing={2} sx={{ pt: 4 }}>
         {cards.length > 0 &&
           cards.map((card) => (
-            <Grid item xs={3} key={card.id}>
-              <Card
-                sx={{
-                  maxWidth: 345,
-                  marginBottom: "15px",
-                  position: "relative",
-                }}
-              >
+            <Grid item xs={12} sm={6} md={4} lg={3} key={card.id}>
+              <Card sx={{ marginBottom: "80px", position: "relative" }}>
                 <CardMedia
                   sx={{ height: 140 }}
                   image={card.imgUrl}
@@ -90,7 +88,7 @@ export default function Cards() {
                   <Typography variant="body2" color="text.secondary">
                     <h2> Subtitle: {card.subtitle}</h2>
                     <br />
-                    <hr></hr>
+                    <hr />
                   </Typography>
                   <br />
                   <Typography variant="body2" color="info.main">
@@ -113,16 +111,12 @@ export default function Cards() {
                     </Link>
                   </Typography>
                   <Typography variant="body2" color="info.main">
-                    Address: {card.state}
-                    {card.city}
+                    Address: {card.state} {card.city}
                     {card.street}
                   </Typography>
                 </CardContent>
                 <CardActions
-                  sx={{
-                    display: "flex",
-                    flexDirection: "row-reverse",
-                  }}
+                  sx={{ display: "flex", flexDirection: "row-reverse" }}
                 >
                   {userPermission ? (
                     <IconButton
@@ -158,9 +152,9 @@ export default function Cards() {
                     },
                   }}
                   className="icon-btn"
-                  aria-label="phone"
+                  aria-label="Full"
                 >
-                  <CardModal cardId={card.id} card={card} />
+                  <CardModal card={card} />
                 </IconButton>
               </Card>
             </Grid>

@@ -14,6 +14,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import "../Style/Cards.css";
 import "../index.css";
 import EditCard from "./EditCard";
+import CardModal from "./CardModal";
 export default function GetMyCards({ cards, setCards }) {
   const { setLoader } = useContext(GeneralContext);
   const [cardEdited, setCardEdited] = useState();
@@ -57,17 +58,20 @@ export default function GetMyCards({ cards, setCards }) {
 
   return (
     <Container maxWidth="xl">
-      <h1>My Cards</h1>
-      <h3></h3>
       <Grid container spacing={0} sx={{ pt: 10 }}>
         {cards.length > 0 &&
           cards.map((card) => (
-            <Grid item xs={3} key={card.id}>
-              <Card sx={{ maxWidth: 345 }}>
+            <Grid item xs={12} sm={6} md={4} lg={3} key={card.id}>
+              <Card
+                sx={{
+                  marginBottom: "35px",
+                  position: "relative",
+                }}
+              >
                 <CardMedia
                   sx={{ height: 140 }}
                   image={card.imgUrl}
-                  title="green iguana"
+                  title={card.imgAlt}
                 />
                 <CardContent>
                   <Typography gutterBottom variant="h5" component="div">
@@ -106,6 +110,21 @@ export default function GetMyCards({ cards, setCards }) {
                     </IconButton>
                   </div>
                 </CardActions>
+                <IconButton
+                  sx={{
+                    position: "absolute",
+                    top: "0",
+                    right: "0",
+                    backgroundColor: "transparent",
+                    "&:hover": {
+                      backgroundColor: "transparent",
+                    },
+                  }}
+                  className="icon-btn"
+                  aria-label="Full"
+                >
+                  <CardModal card={card} />
+                </IconButton>
               </Card>
             </Grid>
           ))}

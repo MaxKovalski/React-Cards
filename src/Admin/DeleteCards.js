@@ -13,6 +13,7 @@ export default function DeleteCards() {
   const [cards, setCards] = useState([]);
 
   function deleteById(id) {
+    setLoader(true);
     fetch(
       `https://api.shipap.co.il/admin/cards/${id}?token=5364e7bc-5265-11ee-becb-14dda9d4a5f0`,
       {
@@ -22,10 +23,12 @@ export default function DeleteCards() {
     ).then(() => {
       const afterDelete = cards.filter((c) => c.id !== id);
       setCards(afterDelete);
+      setLoader(false);
     });
   }
 
   useEffect(() => {
+    setLoader(true);
     fetch(
       `https://api.shipap.co.il/cards?token=5364e7bc-5265-11ee-becb-14dda9d4a5f0`,
       {
@@ -35,6 +38,7 @@ export default function DeleteCards() {
       .then((res) => res.json())
       .then((data) => {
         setCards(data);
+        setLoader(false);
       });
   }, []);
 

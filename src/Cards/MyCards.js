@@ -82,11 +82,13 @@ export default function MyCards() {
 
   return (
     <div>
-      <h4> My Cards</h4>
       <div>
-        <Button onClick={handleOpen} variant="contained">
-          Create Card
-        </Button>
+        <h1>My Cards</h1>
+        <div style={{ display: "flex", justifyContent: "center" }}>
+          <Button onClick={handleOpen} variant="contained">
+            Create Card
+          </Button>
+        </div>
         <CreateCard
           handleClose={handleClose}
           publishCards={publishCards}
@@ -94,6 +96,7 @@ export default function MyCards() {
           addCard={addCard}
           open={open}
         />
+
         <GetMyCards cards={cards} setCards={setCards} />
       </div>
     </div>

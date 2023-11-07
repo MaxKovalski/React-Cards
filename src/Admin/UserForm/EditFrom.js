@@ -83,7 +83,7 @@ export default function EditForm({
           variant="contained"
           sx={{ mt: 3, mb: 2 }}
         >
-          Create
+          Edit
         </Button>
       </div>
       <Grid container justifyContent="flex-end">

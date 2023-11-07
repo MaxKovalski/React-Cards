@@ -10,11 +10,11 @@ import Typography from "@mui/material/Typography";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import IconButton from "@mui/material/IconButton";
 import LocalPhoneIcon from "@mui/icons-material/LocalPhone";
-
 import "../Style/Cards.css";
 import "../index.css";
 import RemoveFav from "./RemoveFav";
-
+import CardModal from "../Cards/CardModal";
+import Link from "@mui/material/Link";
 export default function FavCards() {
   const { setLoader, userPermission } = useContext(GeneralContext);
   const [favCards, setFavCards] = useState([]);
@@ -39,25 +39,54 @@ export default function FavCards() {
     <Container maxWidth="xl">
       <h1>Favorite Cards</h1>
 
-      <Grid container spacing={0} sx={{ pt: 10, marginBottom: "70px" }}>
+      <Grid container spacing={2} sx={{ pt: 4, marginBottom: "70px" }}>
         {favCards.length > 0 &&
           favCards.map((card) => (
-            <Grid item xs={3} key={card.id}>
-              <Card sx={{ maxWidth: 345 }}>
+            <Grid item xs={12} sm={6} md={4} lg={3} key={card.id}>
+              <Card
+                sx={{
+                  marginBottom: "35px",
+                  position: "relative",
+                }}
+              >
                 <CardMedia
                   sx={{ height: 140 }}
                   image={card.imgUrl}
-                  title="green iguana"
+                  title={card.imgAlt}
                 />
                 <CardContent>
                   <Typography gutterBottom variant="h5" component="div">
-                    {card.title}
+                    <h4>Title: {card.title} </h4>
                   </Typography>
                   <Typography variant="body2" color="text.secondary">
-                    {card.description}
+                    <h2> Subtitle: {card.subtitle}</h2>
+                    <br />
+                    <hr />
                   </Typography>
-                  <Typography variant="body2" color="text.secondary">
-                    {card.userName}
+                  <br />
+                  <Typography variant="body2" color="info.main">
+                    Phone: {card.phone}
+                  </Typography>
+                  <Typography variant="body2" color="info.main">
+                    WebSite:
+                    <Link
+                      color="info.main"
+                      href={
+                        card.web.startsWith("http://") ||
+                        card.web.startsWith("https://")
+                          ? card.web
+                          : `http://${card.web}`
+                      }
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {" " + card.web}
+                    </Link>
+                  </Typography>
+                  <Typography variant="body2" color="info.main">
+                    Address: {card.state}
+                    {card.city}
+                    {card.street}
                   </Typography>
                 </CardContent>
                 <CardActions
@@ -83,6 +112,21 @@ export default function FavCards() {
                     </a>
                   </IconButton>
                 </CardActions>
+                <IconButton
+                  sx={{
+                    position: "absolute",
+                    top: "0",
+                    right: "0",
+                    backgroundColor: "transparent",
+                    "&:hover": {
+                      backgroundColor: "transparent",
+                    },
+                  }}
+                  className="icon-btn"
+                  aria-label="Full"
+                >
+                  <CardModal card={card} />
+                </IconButton>
               </Card>
             </Grid>
           ))}

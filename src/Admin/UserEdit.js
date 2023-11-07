@@ -1,15 +1,18 @@
-import * as React from "react";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
 import Avatar from "@mui/material/Avatar";
 import Joi from "joi";
 import EditForm from "./UserForm/EditFrom";
+import { useContext, useEffect, useState } from "react";
+import { GeneralContext } from "../App";
 export default function UserEdit({ userParams, userEdit, edited }) {
-  const [open, setOpen] = React.useState(false);
-  const [formData, setFormData] = React.useState(userParams);
-  const [error, setError] = React.useState({});
-  const [isFormValid, setIsFormValid] = React.useState(true);
+  const [open, setOpen] = useState(false);
+  const [formData, setFormData] = useState(userParams);
+  const [error, setError] = useState({});
+  const [isFormValid, setIsFormValid] = useState(true);
+  const { setLoader } = useContext(GeneralContext);
+
   const schema = Joi.object({
     firstName: Joi.string().min(2).required().messages({
       "string.empty": "First Name Required",
@@ -63,7 +66,7 @@ export default function UserEdit({ userParams, userEdit, edited }) {
     }),
   }).options({ stripUnknown: true });
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (userEdit) {
       setFormData(userEdit);
     } else {
@@ -110,6 +113,7 @@ export default function UserEdit({ userParams, userEdit, edited }) {
     setOpen(true);
   };
   const save = (ev) => {
+    setLoader(true);
     ev.preventDefault();
     fetch(
       `https://api.shipap.co.il/admin/clients/${userParams.id}?token=5364e7bc-5265-11ee-becb-14dda9d4a5f0`,
@@ -124,7 +128,7 @@ export default function UserEdit({ userParams, userEdit, edited }) {
         console.log(formData);
         edited(formData);
       })
-      .finally(handleClose());
+      .finally(handleClose(), setLoader(false));
   };
   const style = {
     position: "absolute",

@@ -13,7 +13,12 @@ export const pages = [
   {
     route: "/",
     title: "Home",
-    permissions: [usersPermissions.none],
+    permissions: [
+      usersPermissions.none,
+      usersPermissions.user,
+      usersPermissions.business,
+      usersPermissions.admin,
+    ],
   },
   {
     route: "/login",

@@ -1,12 +1,14 @@
 import { DataGrid } from "@mui/x-data-grid";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Box, IconButton } from "@mui/material";
 import PersonRemoveIcon from "@mui/icons-material/PersonRemove";
 import UserEdit from "./UserEdit";
 import DeleteCards from "./DeleteCards";
+import { GeneralContext } from "../App";
 export default function UserManagement() {
   const [users, setUsers] = useState([]);
   const [userEdited, setUserEdited] = useState();
+  const { setLoader } = useContext(GeneralContext);
   const update = (u) => {
     if (u) {
       const i = users.findIndex((x) => x.id == u.id);
@@ -16,6 +18,7 @@ export default function UserManagement() {
     setUserEdited();
   };
   useEffect(() => {
+    setLoader(true);
     fetch(
       `https://api.shipap.co.il/admin/clients?token=5364e7bc-5265-11ee-becb-14dda9d4a5f0`,
       {
@@ -25,10 +28,12 @@ export default function UserManagement() {
       .then((res) => res.json())
       .then((data) => {
         setUsers(data);
+        setLoader(false);
       });
   }, []);
 
   const deleteUsers = (userId) => {
+    setLoader(true);
     fetch(
       `https://api.shipap.co.il/admin/clients/${userId}?token=5364e7bc-5265-11ee-becb-14dda9d4a5f0`,
       {
@@ -38,6 +43,7 @@ export default function UserManagement() {
     ).then(() => {
       const afterDelete = users.filter((u) => u.id !== userId);
       setUsers(afterDelete);
+      setLoader(false);
     });
   };
 
@@ -69,12 +75,7 @@ export default function UserManagement() {
       width: 100,
       renderCell: (params) => (
         <div>
-          <input
-            type="checkbox"
-            checked={params.row.business}
-            readOnly
-            enable
-          />
+          <input type="checkbox" checked={params.row.business} readOnly />
         </div>
       ),
     },
