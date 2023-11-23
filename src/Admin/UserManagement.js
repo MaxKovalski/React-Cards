@@ -5,10 +5,13 @@ import PersonRemoveIcon from "@mui/icons-material/PersonRemove";
 import UserEdit from "./UserEdit";
 import DeleteCards from "./DeleteCards";
 import { GeneralContext } from "../App";
+import { useSnackbar } from "notistack";
 export default function UserManagement() {
   const [users, setUsers] = useState([]);
   const [userEdited, setUserEdited] = useState();
   const { setLoader } = useContext(GeneralContext);
+
+  const { enqueueSnackbar } = useSnackbar();
   const update = (u) => {
     if (u) {
       const i = users.findIndex((x) => x.id == u.id);
@@ -44,6 +47,8 @@ export default function UserManagement() {
       const afterDelete = users.filter((u) => u.id !== userId);
       setUsers(afterDelete);
       setLoader(false);
+
+      enqueueSnackbar("User Deleted", { variant: "success" });
     });
   };
 

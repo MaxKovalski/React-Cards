@@ -7,11 +7,11 @@ import { Box, IconButton } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import "../Style/Cards.css";
 import "../index.css";
-
+import { useSnackbar } from "notistack";
 export default function DeleteCards() {
   const { setLoader } = useContext(GeneralContext);
   const [cards, setCards] = useState([]);
-
+  const { enqueueSnackbar } = useSnackbar();
   function deleteById(id) {
     setLoader(true);
     fetch(
@@ -24,6 +24,7 @@ export default function DeleteCards() {
       const afterDelete = cards.filter((c) => c.id !== id);
       setCards(afterDelete);
       setLoader(false);
+      enqueueSnackbar("Card Deleted", { variant: "success" });
     });
   }
 

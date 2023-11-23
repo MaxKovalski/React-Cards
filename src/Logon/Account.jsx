@@ -4,11 +4,13 @@ import { GeneralContext } from "../App";
 import AccountForm from "./LogonForm/AccountForm";
 import { useState } from "react";
 import Joi from "joi";
+import { useSnackbar } from "notistack";
 export default function Account({ theme }) {
   const { user, setUser, setLoader } = useContext(GeneralContext);
   const [error, setError] = useState({});
   const [isFormValid, setIsFormValid] = useState(false);
 
+  const { enqueueSnackbar } = useSnackbar();
   const schema = Joi.object({
     firstName: Joi.string().min(2).required().messages({
       "string.empty": "First Name Required",
@@ -79,12 +81,11 @@ export default function Account({ theme }) {
     }
     setIsFormValid(!validate.error);
     setError(tempErrors);
-    handleSubmit(ev);
-    console.log(validate);
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
+
     const form = document.getElementById("accountForm");
     const data = new FormData(form);
     setLoader(true);
@@ -113,6 +114,7 @@ export default function Account({ theme }) {
     )
       .then((res) => {
         if (res.ok) {
+          enqueueSnackbar("User Edited", { variant: "success" });
           return res.json();
         } else {
           return res.text().then((x) => {
@@ -120,9 +122,7 @@ export default function Account({ theme }) {
           });
         }
       })
-      .then((data) => {
-        console.log(data);
-      })
+
       .catch((err) => {
         console.log(err.message);
       })

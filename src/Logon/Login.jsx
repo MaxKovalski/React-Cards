@@ -5,6 +5,7 @@ import { GeneralContext } from "../App";
 import Joi from "joi";
 import LoginForm from "./LogonForm/LoginForm";
 import { usersPermissions } from "../Components/Permissions";
+import { useSnackbar } from "notistack";
 export default function Login({ theme }) {
   const [formData, setFormData] = useState({
     email: "",
@@ -14,7 +15,7 @@ export default function Login({ theme }) {
   const [isFormValid, setIsFormValid] = useState(false);
   const navigate = useNavigate();
   const { setUser, setLoader, setUserPermission } = useContext(GeneralContext);
-
+  const { enqueueSnackbar } = useSnackbar();
   const schema = Joi.object({
     email: Joi.string().email({ tlds: false }).required().messages({
       "string.empty": "Email Address is required",
@@ -68,6 +69,7 @@ export default function Login({ theme }) {
     )
       .then((res) => {
         if (res.ok) {
+          enqueueSnackbar("Login successful", { variant: "success" });
           return res.json();
         } else {
           return res.text().then((x) => {
@@ -87,6 +89,7 @@ export default function Login({ theme }) {
       })
       .catch((err) => {
         console.log(err.message);
+        enqueueSnackbar("Email or Password incorrect ", { variant: "error" });
       })
       .finally(() => setLoader(false));
   };

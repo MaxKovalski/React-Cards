@@ -11,6 +11,7 @@ import {
 import { Link, useNavigate, useResolvedPath } from "react-router-dom";
 import { GeneralContext } from "../App";
 import { usersPermissions, checkPermissions, pages } from "./Permissions";
+import { useSnackbar } from "notistack";
 export default function NavBar({ onThemeChange, theme }) {
   const navigate = useNavigate();
   const [anchorElNav, setAnchorElNav] = useState(null);
@@ -18,6 +19,7 @@ export default function NavBar({ onThemeChange, theme }) {
   const { user, setUser, setLoader, userPermission, setUserPermission } =
     useContext(GeneralContext);
   const path = useResolvedPath().pathname;
+  const { enqueueSnackbar } = useSnackbar();
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
   };
@@ -36,6 +38,7 @@ export default function NavBar({ onThemeChange, theme }) {
       credentials: "include",
     })
       .then(() => {
+        enqueueSnackbar("Logout successful", { variant: "success" });
         setUser();
         setUserPermission();
         setUserPermission(usersPermissions.none);

@@ -271,7 +271,7 @@ export default function AccountForm({
             disabled={!isFormValid}
             sx={{ mt: 3, mb: 2 }}
           >
-            Sign Up
+            Edit
           </Button>
           <Grid container justifyContent="flex-end">
             <Grid item></Grid>

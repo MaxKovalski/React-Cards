@@ -68,6 +68,7 @@ export default function CreateForm({ publishCards, handleInput, addCard }) {
         </Grid>
         <Grid item xs={6}>
           <TextField
+            required
             fullWidth
             name="web"
             label="Web"
@@ -152,6 +153,7 @@ export default function CreateForm({ publishCards, handleInput, addCard }) {
         </Grid>
         <Grid item xs={6}>
           <TextField
+            required
             fullWidth
             name="state"
             label="State"
@@ -164,6 +166,7 @@ export default function CreateForm({ publishCards, handleInput, addCard }) {
         <Grid item xs={6}>
           <TextField
             fullWidth
+            required
             type="Number"
             name="zip"
             label="Zip"

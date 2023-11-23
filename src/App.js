@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./App.css";
 import NavBar from "./Components/NavBar";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
@@ -6,15 +6,18 @@ import CssBaseline from "@mui/material/CssBaseline";
 import Router from "./Router";
 import { createContext } from "react";
 import Loader from "./Components/Loader";
-import { useEffect } from "react";
-import Footer from "./Components/Footer";
 import { usersPermissions } from "./Components/Permissions";
+import Footer from "./Components/Footer";
+import { useSnackbar, SnackbarProvider } from "notistack";
+
 export const GeneralContext = createContext();
+
 function App() {
   const [user, setUser] = useState();
   const [loader, setLoader] = useState(true);
   const [userPermission, setUserPermission] = useState(usersPermissions.none);
   const [themeLight, setThemeType] = useState(true);
+  const { enqueueSnackbar } = useSnackbar();
 
   const lightTheme = createTheme({
     palette: {
@@ -27,7 +30,9 @@ function App() {
       mode: "light",
     },
   });
+
   useEffect(() => {
+    enqueueSnackbar("Login successful", { variant: "success" });
     fetch(`https://api.shipap.co.il/clients/login`, {
       credentials: "include",
     })
@@ -58,12 +63,6 @@ function App() {
 
   const darkTheme = createTheme({
     palette: {
-      // primary: {
-      //   main: "#2b181a",
-      // },
-      // secondary: {
-      //   main: "#FFC107",
-      // },
       mode: "dark",
     },
   });
@@ -86,11 +85,13 @@ function App() {
       }}
     >
       <ThemeProvider theme={theme}>
-        <CssBaseline />
-        <NavBar onThemeChange={handleThemeChange} theme={theme} />
-        <Router theme={theme} />
-        {loader && <Loader />}
-        <Footer />
+        <SnackbarProvider maxSnack={3}>
+          <CssBaseline />
+          <NavBar onThemeChange={handleThemeChange} theme={theme} />
+          <Router theme={theme} />
+          {loader && <Loader />}
+          <Footer />
+        </SnackbarProvider>
       </ThemeProvider>
     </GeneralContext.Provider>
   );

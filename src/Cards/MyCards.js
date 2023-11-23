@@ -4,13 +4,14 @@ import Button from "@mui/material/Button";
 import { GeneralContext } from "../App";
 import GetMyCards from "./GetMyCards";
 import CreateCard from "./CreateCard";
-
+import { useSnackbar } from "notistack";
 export default function MyCards() {
   const { setLoader } = React.useContext(GeneralContext);
   const [open, setOpen] = React.useState(false);
   const [cards, setCards] = React.useState([]);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  const { enqueueSnackbar } = useSnackbar();
   const [addCard, setAddCard] = React.useState({
     title: "",
     subtitle: "",
@@ -27,6 +28,7 @@ export default function MyCards() {
     zip: "",
     city: "",
   });
+
   const publishCards = (ev) => {
     ev.preventDefault();
     setLoader(true);
@@ -42,6 +44,7 @@ export default function MyCards() {
       .then((res) => {
         if (res.ok) {
           res.json();
+          enqueueSnackbar("Card Added", { variant: "success" });
         } else {
           return res.text().then((x) => {
             throw new Error(x);

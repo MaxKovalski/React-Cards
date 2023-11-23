@@ -30,7 +30,7 @@ export default function FavCards() {
       .then((res) => res.json())
       .then((data) => {
         setFavCards(data);
-        console.log(data);
+
         setLoader(false);
       });
   }, []);
@@ -56,13 +56,15 @@ export default function FavCards() {
                 />
                 <CardContent>
                   <Typography gutterBottom variant="h5" component="div">
-                    <h4>Title: {card.title} </h4>
+                    <span>Title: {card.title} </span>
                   </Typography>
                   <Typography variant="body2" color="text.secondary">
-                    <h2> Subtitle: {card.subtitle}</h2>
+                    <span> Subtitle: {card.subtitle}</span>
                     <br />
-                    <hr />
                   </Typography>
+                  <div>
+                    <hr />
+                  </div>
                   <br />
                   <Typography variant="body2" color="info.main">
                     Phone: {card.phone}
@@ -104,14 +106,13 @@ export default function FavCards() {
                     ""
                   )}
 
-                  <IconButton className="icon-btn" aria-label="phone">
-                    <a href={`tel:${card.phone}`}>
-                      <IconButton className="icon-btn" aria-label="phone">
-                        <LocalPhoneIcon />
-                      </IconButton>
-                    </a>
-                  </IconButton>
+                  <a href={`tel:${card.phone}`}>
+                    <IconButton className="icon-btn" aria-label="phone">
+                      <LocalPhoneIcon />
+                    </IconButton>
+                  </a>
                 </CardActions>
+
                 <IconButton
                   sx={{
                     position: "absolute",

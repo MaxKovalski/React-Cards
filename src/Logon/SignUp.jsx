@@ -6,12 +6,14 @@ import SignUpForm from "./LogonForm/SignUpForm";
 import Joi from "joi";
 import { useNavigate } from "react-router-dom";
 import LoginForm from "./LogonForm/LoginForm";
+import { useSnackbar } from "notistack";
 export default function SignUp({ theme }) {
   const { setLoader } = useContext(GeneralContext);
   const [isBusiness, setIsBusiness] = useState(false);
   const [error, setError] = useState({});
   const [isFormValid, setIsFormValid] = useState(false);
   const navigate = useNavigate();
+  const { enqueueSnackbar } = useSnackbar();
   const [formData, setFormData] = useState({
     firstName: "",
     middleName: "",
@@ -139,8 +141,10 @@ export default function SignUp({ theme }) {
     )
       .then((res) => {
         if (res.ok) {
+          enqueueSnackbar("SignUp successful", { variant: "success" });
           return res.json();
         } else {
+          enqueueSnackbar("Error", { variant: "error" });
           return res.text().then((x) => {
             throw new Error(x);
           });

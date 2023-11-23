@@ -76,12 +76,6 @@ export default function About() {
               access.
             </Typography>
           </li>
-          <li>
-            <Typography variant="body1">
-              <strong>Admin Assistance</strong>: Administrators can assist with
-              user management and card deletion.
-            </Typography>
-          </li>
         </ol>
 
         <Typography variant="h6" component="h2" gutterBottom>

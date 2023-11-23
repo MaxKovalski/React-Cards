@@ -6,13 +6,14 @@ import Joi from "joi";
 import EditForm from "./UserForm/EditFrom";
 import { useContext, useEffect, useState } from "react";
 import { GeneralContext } from "../App";
+import { useSnackbar } from "notistack";
 export default function UserEdit({ userParams, userEdit, edited }) {
   const [open, setOpen] = useState(false);
   const [formData, setFormData] = useState(userParams);
   const [error, setError] = useState({});
   const [isFormValid, setIsFormValid] = useState(true);
   const { setLoader } = useContext(GeneralContext);
-
+  const { enqueueSnackbar } = useSnackbar();
   const schema = Joi.object({
     firstName: Joi.string().min(2).required().messages({
       "string.empty": "First Name Required",
@@ -89,7 +90,6 @@ export default function UserEdit({ userParams, userEdit, edited }) {
     }
     setIsFormValid(!validate.error);
     setError(tempErrors);
-    console.log(isFormValid);
   };
   const inputChange = (ev) => {
     const { name, value, type, checked } = ev.target;
@@ -125,10 +125,13 @@ export default function UserEdit({ userParams, userEdit, edited }) {
       }
     )
       .then(() => {
-        console.log(formData);
         edited(formData);
       })
-      .finally(handleClose(), setLoader(false));
+      .finally(
+        handleClose(),
+        setLoader(false),
+        enqueueSnackbar("User Edited", { variant: "success" })
+      );
   };
   const style = {
     position: "absolute",

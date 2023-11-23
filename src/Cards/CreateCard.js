@@ -5,6 +5,7 @@ import Container from "@mui/material/Container";
 import Modal from "@mui/material/Modal";
 import AddCardIcon from "@mui/icons-material/AddCard";
 import CreateForm from "./CardsForms/CreateForm";
+import { useMediaQuery, useTheme } from "@mui/material";
 export default function CreateCard({
   handleClose,
   publishCards,
@@ -12,6 +13,8 @@ export default function CreateCard({
   addCard,
   open,
 }) {
+  const theme = useTheme();
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
   const style = {
     position: "absolute",
     top: "50%",
@@ -30,7 +33,19 @@ export default function CreateCard({
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
     >
-      <Box sx={style}>
+      <Box
+        sx={style}
+        style={{
+          width: isSmallScreen ? "90%" : "50%",
+          height: isSmallScreen ? "80%" : "auto",
+          padding: isSmallScreen ? "20px" : "50px",
+          margin: isSmallScreen ? "10px" : "50px",
+          backgroundColor: "white",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+        }}
+      >
         <Container component="main" maxWidth="large">
           <CssBaseline />
           <Box
