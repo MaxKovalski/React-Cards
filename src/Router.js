@@ -11,7 +11,7 @@ import UserManagement from "./Admin/UserManagement";
 export default function Router({ theme }) {
   return (
     <Routes>
-      <Route path="/" element={<Cards />} />
+      <Route path="/React-Cards" element={<Cards />} />
       <Route path="/fav-cards" element={<FavCards />} />
       <Route path="/my-cards" element={<MyCards theme={theme} />} />
       <Route path="/admin" element={<UserManagement />} />

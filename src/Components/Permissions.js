@@ -11,7 +11,7 @@ export const checkPermissions = (permissions, usersPermissions) => {
 
 export const pages = [
   {
-    route: "/",
+    route: "/React-Cards",
     title: "Home",
     permissions: [
       usersPermissions.none,
