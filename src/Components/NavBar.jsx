@@ -118,7 +118,7 @@ export default function NavBar({ onThemeChange, theme }) {
             variant="h5"
             noWrap
             component="a"
-            href="/"
+            href="/React-Cards"
             sx={{
               mr: 2,
               display: { xs: "flex", md: "none" },
