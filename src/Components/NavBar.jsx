@@ -51,14 +51,23 @@ export default function NavBar({ onThemeChange, theme }) {
     <AppBar position="static">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          <Link to="/React-Cards">
-            <AdbIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
+          <Link
+            style={{
+              display: "flex",
+              marginRight: 1,
+              textDecoration: "none",
+              alignItems: "center",
+              color: "inherit",
+            }}
+            to="/React-Cards"
+          >
+            <AdbIcon />
             <Typography
               variant="h6"
               noWrap
               component="a"
               sx={{
-                mr: 2,
+                marginRight: 2,
                 display: { xs: "none", md: "flex" },
                 fontFamily: "monospace",
                 fontWeight: 700,
