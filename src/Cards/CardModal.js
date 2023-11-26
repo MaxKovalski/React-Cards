@@ -69,24 +69,24 @@ export default function CardModal({ card }) {
               <br />
               <br />
             </Typography>
-            <Typography variant="h5" color="text.main">
+            <Typography variant="h5" color="info.main">
               {card.subtitle}
               <br />
             </Typography>
-            <Typography variant="h5" color="text.main">
+            <Typography variant="h5" color="info.main">
               {card.description}
               <hr />
               <br />
             </Typography>
-            <Typography variant="h5" color="text.main">
+            <Typography variant="h5" color="info.main">
               Email: {card.email}
             </Typography>
-            <Typography variant="h5" color="text.secondary">
+            <Typography variant="h5" color="info.main">
               <a href={`tel:${card.phone}`} style={linkStyle}>
                 Phone: {card.phone}
               </a>
             </Typography>
-            <Typography variant="h5" color="text.main">
+            <Typography variant="h5" color="info.main">
               WebSite:
               <Link
                 color="info.main"
@@ -102,11 +102,11 @@ export default function CardModal({ card }) {
                 {" " + card.web}
               </Link>
             </Typography>
-            <Typography variant="h5" color="text.secondary">
+            <Typography variant="h5" color="info.main">
               Address: {card.country} {card.city} {card.street}
               {card.houseNumber}
             </Typography>
-            <Typography variant="h5" color="text.main">
+            <Typography variant="h5" color="info.main">
               Zip: {card.zip}
             </Typography>
           </CardContent>
