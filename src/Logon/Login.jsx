@@ -85,7 +85,7 @@ export default function Login({ theme }) {
         } else if (data.admin) {
           setUserPermission(usersPermissions.admin);
         }
-        navigate("/");
+        navigate("/React-Cards");
       })
       .catch((err) => {
         console.log(err.message);
