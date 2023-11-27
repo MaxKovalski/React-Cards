@@ -15,7 +15,7 @@ const fields = [
   { name: "country", label: "Country", type: "text" },
   { name: "city", label: "City", type: "text" },
   { name: "street", label: "Street", type: "text" },
-  { name: "houseNumber", label: "House Number", type: "number" },
+  { name: "houseNumber", label: "House Number", type: "Number" },
   { name: "state", label: "State", type: "text" },
   { name: "zip", label: "Zip", type: "text" },
 ];

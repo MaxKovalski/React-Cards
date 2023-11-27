@@ -84,10 +84,7 @@ export default function LoginForm({
               onChange={validationCheck}
               value={formData.password}
             />
-            <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
-            />
+
             <Button
               disabled={!isFormValid}
               type="submit"
@@ -99,7 +96,7 @@ export default function LoginForm({
             </Button>
             <Grid container>
               <Grid item xs>
-                <Link to="/" variant="body2" color="#ff9800">
+                <Link to="/React-Cards" variant="body2" color="#ff9800">
                   Back
                 </Link>
               </Grid>
@@ -124,8 +121,8 @@ export default function LoginForm({
         {...props}
       >
         {"Copyright © "}
-        <Link color="inherit" href="https://mui.com/">
-          Your Website
+        <Link color="inherit" to={"https://maxim-kovalski.com"} target="_blank">
+          KOVALSKI
         </Link>{" "}
         {new Date().getFullYear()}
         {"."}

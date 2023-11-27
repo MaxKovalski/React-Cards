@@ -1,18 +1,18 @@
-import * as React from "react";
 import Button from "@mui/material/Button";
 
 import { GeneralContext } from "../App";
 import GetMyCards from "./GetMyCards";
 import CreateCard from "./CreateCard";
 import { useSnackbar } from "notistack";
+import { useContext, useState } from "react";
 export default function MyCards() {
-  const { setLoader } = React.useContext(GeneralContext);
-  const [open, setOpen] = React.useState(false);
-  const [cards, setCards] = React.useState([]);
+  const { setLoader } = useContext(GeneralContext);
+  const [open, setOpen] = useState(false);
+  const [cards, setCards] = useState([]);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const { enqueueSnackbar } = useSnackbar();
-  const [addCard, setAddCard] = React.useState({
+  const [addCard, setAddCard] = useState({
     title: "",
     subtitle: "",
     description: "",
@@ -28,6 +28,7 @@ export default function MyCards() {
     zip: "",
     city: "",
   });
+  console.log(cards);
 
   const publishCards = (ev) => {
     ev.preventDefault();
@@ -42,15 +43,25 @@ export default function MyCards() {
       }
     )
       .then((res) => {
-        if (res.ok) {
-          res.json();
-          enqueueSnackbar("Card Added", { variant: "success" });
-        } else {
+        if (!res.ok) {
           return res.text().then((x) => {
             throw new Error(x);
           });
         }
-        setCards([...cards, addCard]);
+        return res.json();
+      })
+      .then(() => {
+        enqueueSnackbar("Card Added", { variant: "success" });
+        fetch(
+          `https://api.shipap.co.il/business/cards?token=5364e7bc-5265-11ee-becb-14dda9d4a5f0`,
+          {
+            credentials: "include",
+          }
+        )
+          .then((res) => res.json())
+          .then((data) => {
+            setCards(data);
+          });
       })
 
       .finally(() => {
@@ -72,6 +83,7 @@ export default function MyCards() {
           city: "",
         });
         handleClose();
+        setCards([...cards, addCard]);
       });
   };
   const handleInput = (ev) => {
@@ -98,9 +110,10 @@ export default function MyCards() {
           handleInput={handleInput}
           addCard={addCard}
           open={open}
+          setAddCard={setAddCard}
         />
 
-        <GetMyCards cards={cards} setCards={setCards} />
+        <GetMyCards cards={cards} setCards={setCards} test={publishCards} />
       </div>
     </div>
   );

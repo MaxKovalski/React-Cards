@@ -34,6 +34,7 @@ export default function CardModal({ card }) {
     <div className="test">
       <OpenInFullIcon onClick={handleOpen} sx={{ color: "info.main" }} />
       <Modal
+        theme={theme}
         open={open}
         onClose={handleClose}
         aria-labelledby="modal-modal-title"
@@ -46,7 +47,8 @@ export default function CardModal({ card }) {
             height: isSmallScreen ? "80%" : "auto",
             padding: isSmallScreen ? "20px" : "50px",
             margin: isSmallScreen ? "10px" : "50px",
-            backgroundColor: "white",
+            backgroundColor: theme.palette.background.default,
+
             display: "flex",
             flexDirection: "column",
             alignItems: "center",

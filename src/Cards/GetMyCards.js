@@ -20,7 +20,6 @@ import { useSnackbar } from "notistack";
 export default function GetMyCards({ cards, setCards }) {
   const { setLoader } = useContext(GeneralContext);
   const [cardEdited, setCardEdited] = useState();
-
   const { enqueueSnackbar } = useSnackbar();
   useEffect(() => {
     setLoader(true);
@@ -55,6 +54,7 @@ export default function GetMyCards({ cards, setCards }) {
     ).then(() => {
       const afterDelete = cards.filter((c) => c.id !== cardId);
       setCards(afterDelete);
+
       setLoader(false);
       enqueueSnackbar("Card Deleted", { variant: "success" });
     });
@@ -83,6 +83,10 @@ export default function GetMyCards({ cards, setCards }) {
                   </Typography>
                   <Typography variant="body2" color="text.secondary">
                     <span> Subtitle: {card.subtitle}</span>
+                    <br />
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    <span> cardId: {card.id}</span>
                     <br />
                   </Typography>
                   <div>
@@ -129,6 +133,7 @@ export default function GetMyCards({ cards, setCards }) {
                       card={cardEdited}
                       edited={update}
                       cardData={card}
+                      setCards={setCards}
                     />
                   </Box>
                   <div>

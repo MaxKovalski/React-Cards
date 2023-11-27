@@ -4,14 +4,18 @@ import CreateIcon from "@mui/icons-material/Create";
 import IconButton from "@mui/material/IconButton";
 import Avatar from "@mui/material/Avatar";
 import AddCardIcon from "@mui/icons-material/AddCard";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import EditForm from "./CardsForms/EditForm";
 import Joi from "joi";
-export default function EditCard({ CardEdit, edited, cardData }) {
+import { useSnackbar } from "notistack";
+import { GeneralContext } from "../App";
+export default function EditCard({ card, edited, cardData }) {
   const [open, setOpen] = useState(false);
-  const [formData, setFormData] = useState();
+  const { setLoader } = useContext(GeneralContext);
+  const [formData, setFormData] = useState({});
   const [error, setError] = useState({});
   const [isFormValid, setIsFormValid] = useState(true);
+  const { enqueueSnackbar } = useSnackbar();
   const schema = Joi.object({
     title: Joi.string().min(2).required().messages({
       "string.empty": "Title Required",
@@ -71,12 +75,12 @@ export default function EditCard({ CardEdit, edited, cardData }) {
     }),
   }).options({ stripUnknown: true });
   useEffect(() => {
-    if (CardEdit) {
-      setFormData(CardEdit);
+    if (card) {
+      setFormData(card);
     } else {
       setFormData();
     }
-  }, [CardEdit]);
+  }, [card]);
   const inputChange = (ev) => {
     const { name, value } = ev.target;
     setFormData({
@@ -107,6 +111,7 @@ export default function EditCard({ CardEdit, edited, cardData }) {
   const handleClose = () => setOpen(false);
   const save = (ev) => {
     ev.preventDefault();
+    setLoader(true);
     fetch(
       `https://api.shipap.co.il/business/cards/${cardData.id}?token=5364e7bc-5265-11ee-becb-14dda9d4a5f0`,
       {
@@ -118,8 +123,9 @@ export default function EditCard({ CardEdit, edited, cardData }) {
     )
       .then(() => {
         edited(formData);
+        enqueueSnackbar("Card Edited", { variant: "success" });
       })
-      .finally(handleClose());
+      .finally(() => handleClose(), setLoader(false));
   };
   const style = {
     position: "absolute",
