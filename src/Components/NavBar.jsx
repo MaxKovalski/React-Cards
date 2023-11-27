@@ -140,7 +140,7 @@ export default function NavBar({ onThemeChange, theme }) {
               textDecoration: "none",
             }}
           >
-            LOGO
+            Maxim
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             {pages

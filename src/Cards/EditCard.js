@@ -9,6 +9,7 @@ import EditForm from "./CardsForms/EditForm";
 import Joi from "joi";
 import { useSnackbar } from "notistack";
 import { GeneralContext } from "../App";
+import { useMediaQuery, useTheme } from "@mui/material";
 export default function EditCard({ card, edited, cardData }) {
   const [open, setOpen] = useState(false);
   const { setLoader } = useContext(GeneralContext);
@@ -16,6 +17,9 @@ export default function EditCard({ card, edited, cardData }) {
   const [error, setError] = useState({});
   const [isFormValid, setIsFormValid] = useState(true);
   const { enqueueSnackbar } = useSnackbar();
+  const theme = useTheme();
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
+
   const schema = Joi.object({
     title: Joi.string().min(2).required().messages({
       "string.empty": "Title Required",
@@ -149,15 +153,21 @@ export default function EditCard({ card, edited, cardData }) {
         <CreateIcon />
       </IconButton>
       <Modal
+        theme={theme}
         open={open}
         onClose={handleClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <Box sx={style}>
+        <Box>
           <Box
-            sx={{
-              marginTop: 8,
+            sx={style}
+            style={{
+              width: isSmallScreen ? "90%" : "50%",
+              height: isSmallScreen ? "80%" : "auto",
+              padding: isSmallScreen ? "20px" : "50px",
+              margin: isSmallScreen ? "10px" : "50px",
+              backgroundColor: theme.palette.background.default,
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
