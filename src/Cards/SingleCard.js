@@ -79,10 +79,13 @@ export default function SingleCard({
               ""
             )}
             {userPermission ? (
-              <IconButton className="icon-btn" aria-label="phone">
-                <a href={`tel:${card.phone}`}>
-                  <LocalPhoneIcon />
-                </a>
+              <IconButton
+                component="a"
+                href={`tel:${card.phone}`}
+                className="icon-btn"
+                aria-label="phone"
+              >
+                <LocalPhoneIcon />
               </IconButton>
             ) : (
               ""

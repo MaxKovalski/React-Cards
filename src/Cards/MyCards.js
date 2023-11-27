@@ -28,7 +28,6 @@ export default function MyCards() {
     zip: "",
     city: "",
   });
-  console.log(cards);
 
   const publishCards = (ev) => {
     ev.preventDefault();

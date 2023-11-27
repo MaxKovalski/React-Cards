@@ -18,7 +18,6 @@ import Link from "@mui/material/Link";
 export default function FavCards() {
   const { setLoader, userPermission } = useContext(GeneralContext);
   const [favCards, setFavCards] = useState([]);
-
   useEffect(() => {
     setLoader(true);
     fetch(
@@ -30,7 +29,6 @@ export default function FavCards() {
       .then((res) => res.json())
       .then((data) => {
         setFavCards(data);
-
         setLoader(false);
       });
   }, []);

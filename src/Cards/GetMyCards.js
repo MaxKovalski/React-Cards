@@ -85,10 +85,7 @@ export default function GetMyCards({ cards, setCards }) {
                     <span> Subtitle: {card.subtitle}</span>
                     <br />
                   </Typography>
-                  <Typography variant="body2" color="text.secondary">
-                    <span> cardId: {card.id}</span>
-                    <br />
-                  </Typography>
+
                   <div>
                     <hr />
                   </div>
@@ -137,11 +134,14 @@ export default function GetMyCards({ cards, setCards }) {
                     />
                   </Box>
                   <div>
-                    <a href={`tel:${card.phone}`}>
-                      <IconButton className="icon-btn" aria-label="phone">
-                        <LocalPhoneIcon />
-                      </IconButton>
-                    </a>
+                    <IconButton
+                      component="a"
+                      href={`tel:${card.phone}`}
+                      className="icon-btn"
+                      aria-label="phone"
+                    >
+                      <LocalPhoneIcon />
+                    </IconButton>
                   </div>
                 </CardActions>
                 <IconButton
